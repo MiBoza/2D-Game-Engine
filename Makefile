@@ -1,14 +1,16 @@
 CC = g++
 debug = -g -fsanitize=address
-CFLAGS = -std=c++20 -w -fmax-errors=6 # $(debug)
-LFLAGS = -lSDL2 -lSDL2_image
+CFLAGS = -std=c++20 -w -fmax-errors=6 $(debug)
+LFLAGS = -lSDL2_image -lSDL2
 Include = -I include
 
-all: Game Main Join
+all: Object Game Main Join
 
 Join:
-	$(CC) out/Main.o out/Game.o  $(LFLAGS) -o debug.obj
+	$(CC) $(debug) out/Main.a out/Game.a out/Object.a $(LFLAGS) -o debug.obj
 Main:
-	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o out/Main.o
+	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o out/Main.a
 Game:
-	$(CC) $(CFLAGS) $(Include) -c source/Game.cpp -o out/Game.o
+	$(CC) $(CFLAGS) $(Include) -c source/Game.cpp -o out/Game.a
+Object:
+	$(CC) $(CFLAGS) $(Include) -c source/Object.cpp -o out/Object.a
