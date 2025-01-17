@@ -1,5 +1,6 @@
 CC = g++
-CFLAGS = -std=c++20 -w -fmax-errors=6
+debug = -g -fsanitize=address
+CFLAGS = -std=c++20 -w -fmax-errors=6 # $(debug)
 LFLAGS = -lSDL2 -lSDL2_image
 Include = -I include
 

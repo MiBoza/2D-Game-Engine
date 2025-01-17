@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
 int main(){
-    Game* game = new Game("Mystery Title", 300, 200, 0);
+    Game* game = new Game("Mystery Title", 900, 600, 0);
 
     while(game->running){
         game->Event_Handler();

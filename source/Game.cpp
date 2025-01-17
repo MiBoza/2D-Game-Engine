@@ -1,7 +1,16 @@
 #include "Game.hpp"
 
+SDL_Texture* texture;
+SDL_Rect destination;
+
 Game::Game(const char* title, int width, int height, bool fullscreen){
-    const int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
+    int flags = 0;
+    if(fullscreen){
+        flags = SDL_WINDOW_FULLSCREEN;
+        width = 1920;
+        height = 1080;
+    }
+
     running = 0;
     if(SDL_INIT_EVERYTHING == 0){
         puts("SDL couldn't initialise");
@@ -20,7 +29,14 @@ Game::Game(const char* title, int width, int height, bool fullscreen){
         puts("Renderer diddn't initialise");
         exit(1);
     }
+
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //Red, Green. Blue, Something
+
+    int size = height;
+    int xcorner = (width - size)/2;
+    int ycorner = (height - size)/2;
+    destination = {xcorner, ycorner, size, size};
+    texture = IMG_LoadTexture(renderer, "assets/Circle.png");
 
     running = 1;
 }
@@ -32,11 +48,13 @@ void Game::Event_Handler(){
 }
 void Game::Render(){
     SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, &destination);
     SDL_RenderPresent(renderer);
 }
 Game::~Game(){
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    // delete texture;
     SDL_Quit();
     puts("Game ended");
 }
