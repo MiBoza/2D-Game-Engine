@@ -1,5 +1,9 @@
 #include "Game.hpp"
 
+void PrintRect(const SDL_Rect& rect){
+    printf("[%i, %i, %i, %i]\n", rect.x, rect.y, rect.h, rect.w);
+}
+
 Game::Game(const char* title, int width, int height, bool fullscreen){
     int flags = 0;
     if(fullscreen){
@@ -21,6 +25,7 @@ Game::Game(const char* title, int width, int height, bool fullscreen){
         exit(1);
     }
 
+    window_res = {width, height};
     renderer = SDL_CreateRenderer(window, -1, 0);
     if(!renderer){
         puts("Renderer didn't initialise");
@@ -40,8 +45,9 @@ void Game::Event_Handler(){
 void Game::Render(){
     SDL_RenderClear(renderer);
     if(circle->texture){
-        // SDL_RenderCopy(renderer, circle->texture, NULL, &circle->destination);
-        SDL_RenderCopy(renderer, circle->texture, NULL, NULL);
+        if(circle->outdated)
+            circle->Update_Rects();
+        SDL_RenderCopy(renderer, circle->texture, &circle->source, &circle->destination);
     }
     SDL_RenderPresent(renderer);
 }

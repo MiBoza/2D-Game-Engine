@@ -2,8 +2,17 @@
 // #include <stdio.h>
 
 void Game::SetUp(){
-    circle = new Object(renderer);
+    Vector2 window_res = {900, 600};
+    circle = new Object(renderer, window_res);
     circle->Set_Texture("assets/Circle.png");
+    circle->Set_Pos({30, 450});
+    circle->Set_Scale(1.0/3);
+
+    circle->Update_Rects();
+    printf("source = ");
+    PrintRect(circle->source);
+    printf("destination = ");
+    PrintRect(circle->destination);
 }
 
 int main(){
