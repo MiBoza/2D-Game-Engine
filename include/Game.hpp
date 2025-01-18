@@ -14,7 +14,7 @@ public:
     void Event_Handler();
     void Render();
     void SetUp();
-    // void Update();
+    void Update();
     ~Game();
     bool running;
     Object* circle = NULL;

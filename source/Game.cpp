@@ -46,7 +46,7 @@ void Game::Render(){
     SDL_RenderClear(renderer);
     if(circle->texture){
         if(circle->outdated)
-            circle->Update_Rects();
+            circle->Update_Dest();
         SDL_RenderCopy(renderer, circle->texture, &circle->source, &circle->destination);
     }
     SDL_RenderPresent(renderer);

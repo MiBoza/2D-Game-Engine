@@ -11,15 +11,18 @@ struct Vector2{
     Vector2 operator-(const Vector2& v);
     Vector2 operator*(float A);
     Vector2 operator/(float A);
+    void operator+=(const Vector2& v);
 };
+
+void Print_Vector2(const Vector2& v);
 
 class Object{
 public:
     Object(SDL_Renderer* p_renderer, const Vector2& p_window_res);
-    void Set_Texture(const char* path);
+    void Set_Texture(const char* path, const Vector2& p_texture_res);
     void Set_Pos(const Vector2& p_pos);
     void Set_Scale(float p_scale);
-    void Update_Rects();
+    void Update_Dest();
     ~Object();
     friend class Game;
 private:
@@ -28,6 +31,7 @@ private:
     float scale;
     bool outdated;
     Vector2 window_res;
+    Vector2 texture_res;
     Vector2 pos;
     SDL_Rect source;
     SDL_Rect destination;
