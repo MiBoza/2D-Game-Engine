@@ -2,11 +2,8 @@
 #define Game_hpp
 
 #include "Object.hpp"
-// #include <stdio.h>
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_image.h>
 
-void PrintRect(const SDL_Rect& rect);
+void Print_Rect(const SDL_Rect& rect);
 
 class Game{
 public:
@@ -14,12 +11,16 @@ public:
     void Event_Handler();
     void Render();
     void SetUp();
+    void Timing();
+    void Set_Framerate(float framerate);
     void Update();
     ~Game();
+    Uint32 delta_time;
     bool running;
     Object* circle = NULL;
 
 private:
+    float framedelay = 40;
     Vector2 window_res;
     SDL_Window* window;
     SDL_Renderer* renderer;

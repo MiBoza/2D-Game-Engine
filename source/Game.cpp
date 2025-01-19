@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-void PrintRect(const SDL_Rect& rect){
+void Print_Rect(const SDL_Rect& rect){
     printf("[%i, %i, %i, %i]\n", rect.x, rect.y, rect.h, rect.w);
 }
 
@@ -36,21 +36,42 @@ Game::Game(const char* title, int width, int height, bool fullscreen){
 
     running = 1;
 }
+
 void Game::Event_Handler(){
     SDL_Event event;
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT)
         running = 0;
 }
+
 void Game::Render(){
     SDL_RenderClear(renderer);
     if(circle->texture){
         if(circle->outdated)
             circle->Update_Dest();
+        // Print_Rect(circle->destination);
         SDL_RenderCopy(renderer, circle->texture, &circle->source, &circle->destination);
     }
     SDL_RenderPresent(renderer);
 }
+
+void Game::Set_Framerate(float framerate){
+    framedelay = 1000.0/framerate;
+}
+
+void Game::Timing(){
+    Uint32 current_frame = SDL_GetTicks();
+    static Uint32 last_frame = current_frame;
+    static int to_wait = 0;
+
+    delta_time = current_frame - last_frame;
+    to_wait += framedelay - delta_time;
+    if(to_wait > 0)
+        SDL_Delay(to_wait);
+
+    last_frame = current_frame;
+}
+
 Game::~Game(){
     delete circle;
     SDL_DestroyRenderer(renderer);
