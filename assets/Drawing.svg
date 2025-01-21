@@ -40,7 +40,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <circle
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#3fe91c;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
        id="path61"
        cx="20"
        cy="19.999998"
@@ -48,5 +48,15 @@
        inkscape:export-filename="Circle.png"
        inkscape:export-xdpi="497.42325"
        inkscape:export-ydpi="497.42325" />
+    <rect
+       style="fill:none;stroke:#1326d0;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       id="rect340"
+       width="39.521965"
+       height="39.521961"
+       x="45.239021"
+       y="0.23901913"
+       inkscape:export-filename="Square.png"
+       inkscape:export-xdpi="499.47073"
+       inkscape:export-ydpi="499.47073" />
   </g>
 </svg>

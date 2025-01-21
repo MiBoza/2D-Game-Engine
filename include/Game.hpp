@@ -18,7 +18,7 @@ public:
     Uint32 delta_time;
     bool running;
     Object* circle = NULL;
-
+    Object* square = NULL;
 private:
     float framedelay = 40;
     Vector2 window_res;

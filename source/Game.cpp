@@ -52,6 +52,12 @@ void Game::Render(){
         // Print_Rect(circle->destination);
         SDL_RenderCopy(renderer, circle->texture, &circle->source, &circle->destination);
     }
+    if(square->texture){
+        if(square->outdated)
+            square->Update_Dest();
+        // Print_Rect(circle->destination);
+        SDL_RenderCopy(renderer, square->texture, &square->source, &square->destination);
+    }
     SDL_RenderPresent(renderer);
 }
 
@@ -74,6 +80,7 @@ void Game::Timing(){
 
 Game::~Game(){
     delete circle;
+    delete square;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
