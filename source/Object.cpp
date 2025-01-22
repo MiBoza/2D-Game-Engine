@@ -1,14 +1,11 @@
 #include "Object.hpp"
 
-Object::Object(SDL_Renderer* p_renderer, const Vector2& p_window_res):
-    texture(NULL), window_res(p_window_res), pos(window_res/2),
-    size(window_res/10){
-    renderer = p_renderer;
-}
+Object::Object(const TextureManager* p_texture_manager):
+    texture_manager(p_texture_manager){}
 
-void Object::Set_Texture(const char* path, const Vector2& p_texture_res){
-    texture = IMG_LoadTexture(renderer, path);
-    texture_res = p_texture_res;
+void Object::Set_Texture(const int index){
+    texture_index = index;
+    Vector2 texture_res = texture_manager->resolutions[texture_index];
     source = {0, 0, texture_res.x, texture_res.y};
 }
 
@@ -24,13 +21,7 @@ void Object::Set_Size(const Vector2& p_size){
 
 void Object::Update_Dest(){
     Vector2 corner = pos - size/2;
-    // printf("[%f, %f, %f, %f]\n", corner.x, corner.y, size.x, size.y);
     destination = {corner.x, corner.y, size.x, size.y};
 
     outdated = 0;
-}
-
-Object::~Object(){
-    if(texture)
-        SDL_DestroyTexture(texture);
 }

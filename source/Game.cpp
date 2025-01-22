@@ -34,8 +34,9 @@ Game::Game(const char* title, int width, int height, bool fullscreen){
     }
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //Red, Green, Blue, Something
-
     running = 1;
+
+    texture_manager = new TextureManager(renderer, window_res);
 }
 
 void Game::Event_Handler(){
@@ -48,18 +49,19 @@ void Game::Event_Handler(){
 void Game::Render(){
     SDL_RenderClear(renderer);
     for(Object* pointy : objects){
-        if(pointy->texture){
+        SDL_Texture* pointy_texture = texture_manager->textures[pointy->texture_index];
+        if(pointy_texture){
             if(pointy->outdated)
                 pointy->Update_Dest();
             // Print_Rect(pointy->destination);
-            SDL_RenderCopy(renderer, pointy->texture, &pointy->source, &pointy->destination);
+            SDL_RenderCopy(renderer, pointy_texture, &pointy->source, &pointy->destination);
         }
     }
     SDL_RenderPresent(renderer);
 }
 
 Object* Game::AddObject(){
-    Object* pointy = new Object(renderer, window_res);
+    Object* pointy = new Object(texture_manager);
     objects.push_back(pointy);
     return pointy;
 }
@@ -82,10 +84,8 @@ void Game::Timing(){
 }
 
 Game::~Game(){
-    for(Object* pointy : objects){
-        delete pointy;
-        pointy = NULL;
-    }
+    delete texture_manager;
+    texture_manager = NULL;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

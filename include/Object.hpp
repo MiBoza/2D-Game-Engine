@@ -1,25 +1,22 @@
 #ifndef Object_hpp
 #define Object_hpp
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include "Vector2.hpp"
+#include "TextureManager.hpp"
 
 class Object{
 public:
-    Object(SDL_Renderer* p_renderer, const Vector2& p_window_res);
-    void Set_Texture(const char* path, const Vector2& p_texture_res);
+    int texture_index;
+
+    Object(const TextureManager* p_texture_manager);
     void Set_Pos(const Vector2& p_pos);
     void Set_Size(const Vector2& p_size);
+    void Set_Texture(const int index);
     void Update_Dest();
     ~Object();
     friend class Game;
 private:
-    SDL_Texture* texture;
-    SDL_Renderer* renderer;
+    const TextureManager* texture_manager;
     bool outdated;
-    Vector2 window_res;
-    Vector2 texture_res;
     Vector2 size;
     Vector2 pos;
     SDL_Rect source;

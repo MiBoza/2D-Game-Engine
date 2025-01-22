@@ -15,20 +15,23 @@ Object* square = NULL;
 Object* square2 = NULL;
 
 void Game::SetUp(){
-    Vector2 texture_res = {787, 787};
+    Vector2 texture_res({787, 787});
+
+    int circle_index = texture_manager->Load("assets/Circle.png", texture_res);
+    int square_index = texture_manager->Load("assets/Square.png", texture_res);
 
     circle = AddObject();
-    circle->Set_Texture("assets/Circle.png", texture_res);
+    circle->Set_Texture(circle_index);
     circle->Set_Pos(cpos);
     circle->Set_Size(size);
 
     square = AddObject();
-    square->Set_Texture("assets/Square.png", texture_res);
+    square->Set_Texture(square_index);
     square->Set_Pos(spos);
     square->Set_Size(size*1.2);
 
     square2 = AddObject();
-    square2->Set_Texture("assets/Square.png", texture_res);
+    square2->Set_Texture(square_index);
     square2->Set_Pos(s2pos);
     square2->Set_Size(size*0.8);
 

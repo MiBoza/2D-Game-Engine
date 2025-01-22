@@ -24,6 +24,7 @@ private:
     Vector2 window_res;
     SDL_Window* window;
     SDL_Renderer* renderer;
+    TextureManager* texture_manager;
     std::list<Object*> objects;
 };
 
