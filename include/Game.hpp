@@ -2,6 +2,7 @@
 #define Game_hpp
 
 #include "Object.hpp"
+#include <list>
 
 void Print_Rect(const SDL_Rect& rect);
 
@@ -11,19 +12,19 @@ public:
     void Event_Handler();
     void Render();
     void SetUp();
+    Object* AddObject();
     void Timing();
     void Set_Framerate(float framerate);
     void Update();
     ~Game();
     Uint32 delta_time;
     bool running;
-    Object* circle = NULL;
-    Object* square = NULL;
 private:
     float framedelay = 40;
     Vector2 window_res;
     SDL_Window* window;
     SDL_Renderer* renderer;
+    std::list<Object*> objects;
 };
 
 #endif //Game_hpp

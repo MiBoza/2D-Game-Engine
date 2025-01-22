@@ -1,4 +1,5 @@
 #include "Game.hpp"
+using std::list;
 
 void Print_Rect(const SDL_Rect& rect){
     printf("[%i, %i, %i, %i]\n", rect.x, rect.y, rect.h, rect.w);
@@ -46,19 +47,21 @@ void Game::Event_Handler(){
 
 void Game::Render(){
     SDL_RenderClear(renderer);
-    if(circle->texture){
-        if(circle->outdated)
-            circle->Update_Dest();
-        // Print_Rect(circle->destination);
-        SDL_RenderCopy(renderer, circle->texture, &circle->source, &circle->destination);
-    }
-    if(square->texture){
-        if(square->outdated)
-            square->Update_Dest();
-        // Print_Rect(circle->destination);
-        SDL_RenderCopy(renderer, square->texture, &square->source, &square->destination);
+    for(Object* pointy : objects){
+        if(pointy->texture){
+            if(pointy->outdated)
+                pointy->Update_Dest();
+            // Print_Rect(pointy->destination);
+            SDL_RenderCopy(renderer, pointy->texture, &pointy->source, &pointy->destination);
+        }
     }
     SDL_RenderPresent(renderer);
+}
+
+Object* Game::AddObject(){
+    Object* pointy = new Object(renderer, window_res);
+    objects.push_back(pointy);
+    return pointy;
 }
 
 void Game::Set_Framerate(float framerate){
@@ -79,8 +82,10 @@ void Game::Timing(){
 }
 
 Game::~Game(){
-    delete circle;
-    delete square;
+    for(Object* pointy : objects){
+        delete pointy;
+        pointy = NULL;
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
