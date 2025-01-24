@@ -2,7 +2,6 @@
 #define Game_hpp
 
 #include "Object.hpp"
-#include <list>
 
 void Print_Rect(const SDL_Rect& rect);
 
@@ -13,6 +12,8 @@ public:
     void Render();
     void SetUp();
     Object* AddObject();
+    void AddRigidBody(Object* object);
+    void RigidUpdate();
     void Timing();
     void Set_Framerate(float framerate);
     void Update();
@@ -20,11 +21,12 @@ public:
     Uint32 delta_time;
     bool running;
 private:
-    float framedelay = 40;
+    float frame_delay = 40;
     Vector2 window_res;
     SDL_Window* window;
     SDL_Renderer* renderer;
     TextureManager* texture_manager;
+    std::list<RigidBody*> rigid_bodies;
     std::list<Object*> objects;
 };
 

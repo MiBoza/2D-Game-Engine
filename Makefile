@@ -8,6 +8,8 @@ all: Object Game Main Join
 
 Join:
 	$(CC) $(debug) out/Main.a out/Game.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
+HotFix:
+	$(CC) $(CFLAGS) $(Include) source/Hot_Fix.cpp out/Vector2.a -o Hot_Fix.obj
 Main:
 	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o out/Main.a
 Game:

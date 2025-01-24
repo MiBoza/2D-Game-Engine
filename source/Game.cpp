@@ -49,13 +49,13 @@ void Game::Event_Handler(){
 void Game::Render(){
     SDL_RenderClear(renderer);
     for(Object* pointy : objects){
+        if(pointy->hidden)
+            continue;
         SDL_Texture* pointy_texture = texture_manager->textures[pointy->texture_index];
-        if(pointy_texture){
-            if(pointy->outdated)
-                pointy->Update_Dest();
-            // Print_Rect(pointy->destination);
-            SDL_RenderCopy(renderer, pointy_texture, &pointy->source, &pointy->destination);
-        }
+        if(pointy->outdated)
+            pointy->Update_Dest();
+        // Print_Rect(pointy->destination);
+        SDL_RenderCopy(renderer, pointy_texture, &pointy->source, &pointy->destination);
     }
     SDL_RenderPresent(renderer);
 }
@@ -66,8 +66,22 @@ Object* Game::AddObject(){
     return pointy;
 }
 
+void Game::AddRigidBody(Object* object){
+    RigidBody* rigid_body = new RigidBody(object->pos, object->outdated, delta_time);
+    rigid_bodies.push_back(rigid_body);
+
+    object->rigid_body = rigid_body;
+}
+
+void Game::RigidUpdate(){
+    for(RigidBody* rb : rigid_bodies){
+        rb->pos += rb->velocity*delta_time;
+        rb->outdated = 1;
+    }
+}
+
 void Game::Set_Framerate(float framerate){
-    framedelay = 1000.0/framerate;
+    frame_delay = 1000.0/framerate;
 }
 
 void Game::Timing(){
@@ -76,7 +90,8 @@ void Game::Timing(){
     static int to_wait = 0;
 
     delta_time = current_frame - last_frame;
-    to_wait += framedelay - delta_time;
+    // printf("delta_time = %i\n", delta_time);
+    to_wait += frame_delay - delta_time;
     if(to_wait > 0)
         SDL_Delay(to_wait);
 
@@ -86,8 +101,12 @@ void Game::Timing(){
 Game::~Game(){
     delete texture_manager;
     texture_manager = NULL;
+    for(Object* obj : objects){
+        delete obj;
+    }
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    printf("Game ended after %i ms\n", SDL_GetTicks());
     SDL_Quit();
-    puts("Game ended");
 }

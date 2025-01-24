@@ -1,3 +1,4 @@
 Rigid Body Physics
-Texture Manager
 Object Deletion
+Animation Component
+Collisions
