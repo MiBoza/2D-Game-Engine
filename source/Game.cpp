@@ -62,26 +62,17 @@ void Game::Render(){
 
 Object* Game::AddObject(){
     Object* pointy = new Object(texture_manager);
+    pointy->pos = window_res/2;
     objects.push_back(pointy);
     return pointy;
 }
 
-void Game::AddRigidBody(Object* object){
-    RigidBody* rigid_body = new RigidBody(object->pos, object->outdated, delta_time);
-    rigid_bodies.push_back(rigid_body);
-
-    object->rigid_body = rigid_body;
-}
-
-void Game::RigidUpdate(){
-    for(RigidBody* rb : rigid_bodies){
-        rb->pos += rb->velocity*delta_time;
-        rb->outdated = 1;
-    }
-}
-
-void Game::Set_Framerate(float framerate){
-    frame_delay = 1000.0/framerate;
+RigidBody* Game::AddRigidBody(){
+    RigidBody* pointy = new RigidBody(delta_time, texture_manager);
+    pointy->pos = window_res/2;
+    rigid_bodies.push_back(pointy);
+    objects.push_back(pointy);
+    return pointy;
 }
 
 void Game::Timing(){
@@ -98,12 +89,22 @@ void Game::Timing(){
     last_frame = current_frame;
 }
 
+void Game::Set_Framerate(float framerate){
+    frame_delay = 1000.0/framerate;
+}
+
+void Game::RigidUpdate(){
+    for(RigidBody* rb : rigid_bodies){
+        rb->Update();
+    }
+}
+
 Game::~Game(){
     delete texture_manager;
     texture_manager = NULL;
-    for(Object* obj : objects){
-        delete obj;
-    }
+    // for(Object* obj : objects){
+    //     delete obj;
+    // }
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

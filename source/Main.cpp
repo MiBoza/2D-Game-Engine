@@ -1,20 +1,11 @@
 #include "Game.hpp"
 // #include <stdio.h>
 
-Vector2  cpos({350, 400});
-Vector2  spos({350, 400});
-Vector2 s2pos({350, 400});
-Vector2  cvelocity({0.3, 0.2});
-Vector2  svelocity({0.2, 0.3});
-Vector2 s2velocity({0.3,-0.2});
-
-
 Vector2 size({60, 60});
-Vector2 hsize = size/2;
 Vector2 window_res = {900, 600};
-Object* circle = NULL;
-Object* square = NULL;
-Object* square2 = NULL;
+RigidBody* circle = NULL;
+RigidBody* square = NULL;
+RigidBody* square2 = NULL;
 
 void Game::SetUp(){
     Vector2 texture_res({787, 787});
@@ -22,28 +13,25 @@ void Game::SetUp(){
     int circle_index = texture_manager->Load("assets/Circle.png", texture_res);
     int square_index = texture_manager->Load("assets/Square.png", texture_res);
 
-    circle = AddObject();
-    AddRigidBody(circle);
+    circle = AddRigidBody();
     circle->Set_Texture(circle_index);
-    circle->Set_Pos(cpos);
-    circle->Set_Size(size);
-    circle->Set_Velocity(cvelocity);
+    circle->Set_Pos({350, 400});
+    // circle->Set_Size(size);
+    circle->velocity = {0.2, -0.3};
 
-    square = AddObject();
-    AddRigidBody(square);
+    square = AddRigidBody();
     square->Set_Texture(square_index);
-    square->Set_Pos(spos);
-    square->Set_Size(size);
-    square->Set_Velocity(svelocity);
+    square->Set_Pos({350, 400});
+    square->Set_Size(size*0.8);
+    square->velocity = {0.2, 0.3};
 
-    square2 = AddObject();
-    AddRigidBody(square2);
+    square2 = AddRigidBody();
     square2->Set_Texture(square_index);
-    square2->Set_Pos(s2pos);
-    square2->Set_Size(size);
-    square2->Set_Velocity(s2velocity);
+    square2->Set_Pos({350, 400});
+    square2->Set_Size(size*1.2);
+    square2->velocity = {0.3,-0.2};
 
-    // Set_Framerate(2);
+    // Set_Framerate(30);
 }
 
 void Get_Back_In_There(float& pos_comp, float& vel_comp, float edge){
@@ -52,39 +40,38 @@ void Get_Back_In_There(float& pos_comp, float& vel_comp, float edge){
     vel_comp *= -1;
 }
 
-void Collision(Object* object){
-    static int left_edge = hsize.x;
-    static int right_edge = window_res.x - hsize.x;
-    static int top_edge = hsize.y;
-    static int bottom_edge = window_res.y - hsize.y;
-    Vector2 pos = object->Get_Pos();
-    Vector2 velocity = object->Get_Velocity();
+void Collision(RigidBody* rb){
+    static int left_edge = size.x/2;
+    static int right_edge = window_res.x - size.x/2;
+    static int top_edge = size.y/2;
+    static int bottom_edge = window_res.y - size.y/2;
+    Vector2 pos = rb->Get_Pos();
+    Vector2& velocity = rb->velocity;
     bool collided = 0;
 
-    if(pos.x <= left_edge){
+    if(pos.x <= left_edge)
         Get_Back_In_There(pos.x, velocity.x, left_edge);
-        collided = 1;
-    }
-    if(pos.y <= top_edge){
-        Get_Back_In_There(pos.y, velocity.y, top_edge);
-        collided = 1;
-    }
-    if(pos.x >= right_edge){
-        Get_Back_In_There(pos.x, velocity.x, right_edge);
-        collided = 1;
-    }
-    if(pos.y >= bottom_edge){
-        Get_Back_In_There(pos.y, velocity.y, bottom_edge);
-        collided = 1;
-    }
 
-    if(collided){
-        object->Set_Pos(pos);
-        object->Set_Velocity(velocity);
-    }
+    if(pos.y <= top_edge)
+        Get_Back_In_There(pos.y, velocity.y, top_edge);
+
+    if(pos.x >= right_edge)
+        Get_Back_In_There(pos.x, velocity.x, right_edge);
+
+    if(pos.y >= bottom_edge)
+        Get_Back_In_There(pos.y, velocity.y, bottom_edge);
+
+    // if(collided){
+    //     rb->Set_Pos(pos);
+    //     rb->Set_Velocity(velocity);
+    // }
 }
 
 void Game::Update(){
+    // static int count = 3;
+    // if(count-- == 0)
+    //     running = 0;
+
     Collision(circle);
     Collision(square);
     Collision(square2);

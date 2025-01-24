@@ -12,10 +12,10 @@ struct Vector2{
     Vector2 operator/(float A);
     void operator+=(const Vector2& v);
     void operator*=(float A);
+    bool Not_Zero();
 };
 
 Vector2 operator*(float A, Vector2&& v);
-
 void Print_Vector2(const Vector2& v);
 
 #endif //Vector2_hpp

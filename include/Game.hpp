@@ -12,10 +12,10 @@ public:
     void Render();
     void SetUp();
     Object* AddObject();
-    void AddRigidBody(Object* object);
-    void RigidUpdate();
+    RigidBody* AddRigidBody();
     void Timing();
     void Set_Framerate(float framerate);
+    void RigidUpdate();
     void Update();
     ~Game();
     Uint32 delta_time;

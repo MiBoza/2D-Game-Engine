@@ -30,6 +30,13 @@ void Vector2::operator*=(float A){
     y *= A;
 }
 
+bool Vector2::Not_Zero(){
+    if(x || y)
+        return 1;
+    else
+        return 0;
+}
+
 Vector2 operator*(float A, Vector2&& v){
     Vector2 result = {A*v.x, A*v.y};
     return result;
