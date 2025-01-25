@@ -46,18 +46,43 @@ void Game::Event_Handler(){
         running = 0;
 }
 
-void Game::Render(){
+void Game::Components(){
+    //Looks through the list of objects and
+    //Renders or calculates physics as required
     SDL_RenderClear(renderer);
-    for(Object* pointy : objects){
-        if(pointy->hidden)
+    typename std::list<Object*>::iterator it = objects.begin();
+    for(; it != objects.end();){
+        Object* object = *it;
+
+        if(object->flags & DELETED){
+            if(object->flags & RIGID){
+                RigidBody* rb = static_cast<RigidBody*>(object);
+                delete rb;
+            }
+            else
+                delete object;
+            it = objects.erase(it);
             continue;
+        }
+        ++it;
+        if(object->flags & RENDER)
+            Render(object);
+        if(object->flags & RIGID){
+            RigidBody* rb = static_cast<RigidBody*>(object);
+            rb->Rigid_Update();
+        }
+    }
+    SDL_RenderPresent(renderer);
+}
+
+void Game::Render(Object* pointy){
+    if(pointy->flags & RENDER){
         SDL_Texture* pointy_texture = texture_manager->textures[pointy->texture_index];
         if(pointy->outdated)
             pointy->Update_Dest();
         // Print_Rect(pointy->destination);
         SDL_RenderCopy(renderer, pointy_texture, &pointy->source, &pointy->destination);
     }
-    SDL_RenderPresent(renderer);
 }
 
 Object* Game::AddObject(){
@@ -70,7 +95,6 @@ Object* Game::AddObject(){
 RigidBody* Game::AddRigidBody(){
     RigidBody* pointy = new RigidBody(delta_time, texture_manager);
     pointy->pos = window_res/2;
-    rigid_bodies.push_back(pointy);
     objects.push_back(pointy);
     return pointy;
 }
@@ -93,12 +117,6 @@ void Game::Set_Framerate(float framerate){
     frame_delay = 1000.0/framerate;
 }
 
-void Game::RigidUpdate(){
-    for(RigidBody* rb : rigid_bodies){
-        rb->Update();
-    }
-}
-
 Game::~Game(){
     delete texture_manager;
     texture_manager = NULL;
@@ -108,6 +126,6 @@ Game::~Game(){
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    printf("Game ended after %i ms\n", SDL_GetTicks());
+    printf("Game ended after %i ms.\n", SDL_GetTicks());
     SDL_Quit();
 }

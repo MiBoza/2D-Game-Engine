@@ -1,10 +1,11 @@
 CC = g++
 debug = -g -fsanitize=address
-CFLAGS = -std=c++20 -w -fmax-errors=6 $(debug)
+release = -s -O3
+CFLAGS = -std=c++20 -w -fmax-errors=6 $(release)
 LFLAGS = -lSDL2_image -lSDL2
 Include = -I include
 
-all: Object Game Main Join
+all: Vector2 TextureManager Object Game Main Join
 
 Join:
 	$(CC) $(debug) out/Main.a out/Game.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj

@@ -4,6 +4,15 @@
 #include "TextureManager.hpp"
 #include <list>
 
+enum ObjectFlags{
+    EMPTY   = 0x0,
+    DELETED = 0x1,
+    RENDER  = 0x2,
+    RIGID   = 0x4
+};
+
+// ObjectFlags operator|=(ObjectFlags flags, int i);
+
 class Object{
 public:
     int texture_index;
@@ -14,17 +23,17 @@ public:
     void Set_Texture(const int index);
     Vector2 Get_Pos();
     void Update_Dest();
-    // ~Object();
+    void Destroy();
     friend class Game;
 protected:
     const TextureManager* texture_manager;
     bool outdated = 1;
     Vector2 pos;
+    int flags = EMPTY;
 private:
     Vector2 size;
     SDL_Rect source;
     SDL_Rect destination;
-    bool hidden = 1;
 };
 
 // struct RigidBody : public Object{
@@ -34,7 +43,7 @@ struct RigidBody : public Object{
     Vector2 acceleration = {0, 0};
 
     RigidBody(const Uint32& delta_time, const TextureManager* p_texture_manager);
-    void Update();
+    void Rigid_Update();
 };
 
 #endif // Object_hpp

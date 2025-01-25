@@ -16,14 +16,15 @@ void Game::SetUp(){
     circle = AddRigidBody();
     circle->Set_Texture(circle_index);
     circle->Set_Pos({350, 400});
-    // circle->Set_Size(size);
+    circle->Set_Size(size);
     circle->velocity = {0.2, -0.3};
 
     square = AddRigidBody();
     square->Set_Texture(square_index);
-    square->Set_Pos({350, 400});
+    square->Set_Pos({50, 500});
     square->Set_Size(size*0.8);
-    square->velocity = {0.2, 0.3};
+    square->velocity = {0.2, -0.8};
+    // square->acceleration = {0, 0.015};
 
     square2 = AddRigidBody();
     square2->Set_Texture(square_index);
@@ -31,7 +32,7 @@ void Game::SetUp(){
     square2->Set_Size(size*1.2);
     square2->velocity = {0.3,-0.2};
 
-    // Set_Framerate(30);
+    // Set_Framerate(2);
 }
 
 void Get_Back_In_There(float& pos_comp, float& vel_comp, float edge){
@@ -48,6 +49,8 @@ void Collision(RigidBody* rb){
     Vector2 pos = rb->Get_Pos();
     Vector2& velocity = rb->velocity;
     bool collided = 0;
+    // printf("square.pos = ");
+    // Print_Vector2(pos);
 
     if(pos.x <= left_edge)
         Get_Back_In_There(pos.x, velocity.x, left_edge);
@@ -60,21 +63,35 @@ void Collision(RigidBody* rb){
 
     if(pos.y >= bottom_edge)
         Get_Back_In_There(pos.y, velocity.y, bottom_edge);
-
-    // if(collided){
-    //     rb->Set_Pos(pos);
-    //     rb->Set_Velocity(velocity);
-    // }
 }
 
 void Game::Update(){
-    // static int count = 3;
-    // if(count-- == 0)
-    //     running = 0;
+    int runtime = SDL_GetTicks();
+    if(circle){
+        Collision(circle);
+        if(runtime > 2000){
+            circle->Destroy();
+            circle = NULL;
+        }
+    }
 
-    Collision(circle);
-    Collision(square);
-    Collision(square2);
+    if(square){
+        Collision(square);
+        if(runtime > 4000){
+            square->Destroy();
+            square = NULL;
+        }
+    }
+
+    if(square2){
+        Collision(square2);
+        if(runtime > 6000){
+            square2->Destroy();
+            square2 = NULL;
+        }
+    }
+    if(runtime > 8000)
+        running = 0;
 }
 
 int main(){
@@ -84,9 +101,8 @@ int main(){
     while(game->running){
         game->Event_Handler();
         game->Timing();
-        game->RigidUpdate();
         game->Update();
-        game->Render();
+        game->Components();
     }
 
     delete game;
