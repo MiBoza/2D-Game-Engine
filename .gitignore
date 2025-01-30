@@ -1,3 +1,4 @@
 *.obj
+source/Hot_Fix.cpp
 Videos
 assets

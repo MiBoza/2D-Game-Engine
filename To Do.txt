@@ -1,4 +1,4 @@
 Timed Events
 Acceleration while Bouncing
 Animation Component
-Collisions
+Collider Component

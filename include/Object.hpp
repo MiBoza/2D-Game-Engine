@@ -36,14 +36,4 @@ private:
     SDL_Rect destination;
 };
 
-// struct RigidBody : public Object{
-struct RigidBody : public Object{
-    const Uint32& delta_time;
-    Vector2 velocity = {0, 0};
-    Vector2 acceleration = {0, 0};
-
-    RigidBody(const Uint32& delta_time, const TextureManager* p_texture_manager);
-    void Rigid_Update();
-};
-
 #endif // Object_hpp

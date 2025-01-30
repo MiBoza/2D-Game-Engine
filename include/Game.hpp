@@ -1,7 +1,7 @@
 #ifndef Game_hpp
 #define Game_hpp
 
-#include "Object.hpp"
+#include "RigidBody.hpp"
 
 void Print_Rect(const SDL_Rect& rect);
 
