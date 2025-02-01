@@ -32,8 +32,8 @@ Vector2 operator+(const Vector2& u, const Vector2& v){
     return result;
 }
 
-Vector2 operator*(const Vector2& u, const Vector2& v){
-    Vector2 result = {u.x*v.x, u.y*v.y};
+float operator*(const Vector2& u, const Vector2& v){
+    float result = u.x*v.x + u.y*v.y;
     return result;
 }
 
@@ -69,6 +69,6 @@ Vector2 operator*(float A, const Vector2& u){
     return result;
 }
 
-void Print_Vector2(const Vector2& u){
-    printf("[%.2f, %.2f]\n", u.x, u.y);
+void Print_Vector2(const char* name, const Vector2& u){
+    printf("%s[%.2f, %.2f]\n", name, u.x, u.y);
 }

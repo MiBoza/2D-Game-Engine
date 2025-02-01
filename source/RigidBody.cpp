@@ -10,9 +10,9 @@ void RigidBody::Rigid_Update(){
     outdated = 1;
     pos += velocity*delta_time;
     if(Not_Zero(acceleration)){
-        puts("1. Acceleration");
-        pos += acceleration*delta_time*delta_time/2;
-        velocity += acceleration;
+        Vector2 tempy = acceleration*delta_time;
+        pos += tempy*delta_time/2;
+        velocity += tempy;
     }
 }
 
@@ -30,20 +30,31 @@ void RigidBody::Collide(const Line& line){
     float g = p1.x*k - p1.y*h + l;
 
     //Find how long ago the collision ocurred
-    float sqrt_determinant = sqrt(f*f - 4*e*g);
-    float dt = (-f - sqrt_determinant)/2/e;
-    if(dt < 0 || dt > delta_time)
-        dt = (-f + sqrt_determinant)/2/e;
+    float dt;
+
+    if(e == 0)
+        dt = -g/f;
+    else{
+        float determinant = f*f - 4*e*g;
+        if(determinant < 0){
+            printf("determinant = %f\n", determinant);
+            exit(1);
+        }
+        float sqrt_determinant = sqrt(determinant);
+        dt = (-f - sqrt_determinant)/2/e;
+        if(dt < 0 || dt > delta_time)
+            dt = (-f + sqrt_determinant)/2/e;
+    }
 
     //At collision
     Vector2 p0 = 0.5*a*dt*dt - v1*dt + p1;
     Vector2 v0 = v1 - a*dt;
 
-    //Direction perpendicular to the line
-    Vector2 dp = {-h, k};
+    //Outwardly perpendicular direction to the line
+    Vector2 dp = {k, -h};
 
     //Projection of v0 on dp
-    Vector2 vp = (v0 * dp)/Magnitude_Squared(dp);
+    Vector2 vp = (v0 * dp) * dp/Magnitude_Squared(dp);
 
     //Collision inverts component vp of velocity
     v0 += -2*vp;

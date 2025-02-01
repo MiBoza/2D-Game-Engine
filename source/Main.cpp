@@ -1,7 +1,7 @@
 #include "Game.hpp"
 // #include <stdio.h>
 
-Vector2 size({60, 60});
+Vector2 size({20, 20});
 Vector2 window_res = {900, 600};
 RigidBody* circle = NULL;
 // RigidBody* square = NULL;
@@ -16,16 +16,18 @@ void Game::SetUp(){
     circle = AddRigidBody();
     circle->Set_Texture(circle_index);
     // circle->Set_Pos({350, 500});
-    circle->Set_Pos({650.40, 49.40});
+    circle->Set_Pos({60, 70});
     circle->Set_Size(size);
-    circle->velocity = {0.2, -0.3};
+    circle->velocity = {-0.35, -0.275};
+    // circle->acceleration = {0.01, 0.015};
+    circle->acceleration = {0.0, 0.01};
     //
     // square = AddRigidBody();
     // square->Set_Texture(square_index);
     // square->Set_Pos({50, 500});
     // square->Set_Size(size*0.8);
     // square->velocity = {0.2, -0.8};
-    // // square->acceleration = {0, 0.015};
+    // square->acceleration = {0, 0.015};
     //
     // square2 = AddRigidBody();
     // square2->Set_Texture(square_index);
@@ -33,27 +35,22 @@ void Game::SetUp(){
     // square2->Set_Size(size*1.2);
     // square2->velocity = {0.3,-0.2};
 
-    Set_Framerate(10);
+    // Set_Framerate(10);
 }
 
 void Collision(RigidBody* rb){
-    static int left_edge = size.x/2;
-    static int right_edge = window_res.x - size.x/2;
-    static int top_edge = size.y/2;
-    static int bottom_edge = window_res.y - size.y/2;
+    const static int left_edge = size.x/2;
+    const static int right_edge = window_res.x - size.x/2;
+    const static int top_edge = size.y/2;
+    const static int bottom_edge = window_res.y - size.y/2;
 
     //hy = kx + l
-    static Line left = {0, 1, -left_edge};
-    static Line right = {0, 1, -right_edge};
-    static Line top = {1, 0, top_edge};
-    static Line bottom = {1, 0, bottom_edge};
+    const static Line left = {0, 1, -left_edge};
+    const static Line right = {0, 1, -right_edge};
+    const static Line top = {1, 0, top_edge};
+    const static Line bottom = {1, 0, bottom_edge};
 
     Vector2 pos = rb->Get_Pos();
-
-    printf("\npos = ");
-    Print_Vector2(pos);
-    printf("vel = ");
-    Print_Vector2(rb->velocity);
 
     if(pos.x <= left_edge)
         rb->Collide(left);
@@ -69,11 +66,18 @@ void Collision(RigidBody* rb){
 }
 
 void Game::Update(){
-    static int count = 5;
-    if(count-- == 0)
-        running = 0;
+    // Print_Vector2("\nb. pos = ", circle->Get_Pos());
+    // Print_Vector2("b. vel = ", circle->velocity);
+
+    // static int count = 3;
+    // if(count-- == 0)
+    //     running = 0;
 
     Collision(circle);
+
+    // Print_Vector2("a. pos = ", circle->Get_Pos());
+    // Print_Vector2("a. vel = ", circle->velocity);
+
 
     // if(circle){
     //     Collision(circle);
@@ -102,15 +106,13 @@ void Game::Update(){
     //     running = 0;
 }
 
-int main(int argc, char** argv){
+int main(){
     Game* game = new Game("Mystery Title", 900, 600, 0);
     game->SetUp();
-    // if(argc > 1)
-    //     game->delta_time = 500;
+    // game->delta_time = 25;
 
     while(game->running){
         game->Event_Handler();
-        // if(argc == 1)
         game->Timing();
         game->Update();
         game->Components();
