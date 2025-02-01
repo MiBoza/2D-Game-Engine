@@ -22,6 +22,7 @@ public:
 private:
     void Render(Object* pointy);
     float frame_delay = 40;
+    Uint32 relaxation = 0;
     Vector2 window_res;
     SDL_Window* window;
     SDL_Renderer* renderer;

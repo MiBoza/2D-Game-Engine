@@ -107,6 +107,7 @@ void Game::Timing(){
     delta_time = current_frame - last_frame;
     // printf("delta_time = %i\n", delta_time);
     to_wait += frame_delay - delta_time;
+    relaxation += to_wait;
     if(to_wait > 0)
         SDL_Delay(to_wait);
 
@@ -126,6 +127,9 @@ Game::~Game(){
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    printf("Game ended after %i ms.\n", SDL_GetTicks());
+    Uint32 run_time = SDL_GetTicks();
+    printf("Game ended after %i ms.\n", run_time);
+    printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/run_time);
+    puts("%).");
     SDL_Quit();
 }

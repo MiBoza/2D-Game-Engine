@@ -16,11 +16,11 @@ void Game::SetUp(){
     circle = AddRigidBody();
     circle->Set_Texture(circle_index);
     // circle->Set_Pos({350, 500});
-    circle->Set_Pos({60, 70});
+    circle->Set_Pos({840, 70});
     circle->Set_Size(size);
     circle->velocity = {-0.35, -0.275};
     // circle->acceleration = {0.01, 0.015};
-    circle->acceleration = {0.0, 0.01};
+    circle->acceleration = {-0.01, 0.0};
     //
     // square = AddRigidBody();
     // square->Set_Texture(square_index);
@@ -35,7 +35,7 @@ void Game::SetUp(){
     // square2->Set_Size(size*1.2);
     // square2->velocity = {0.3,-0.2};
 
-    // Set_Framerate(10);
+    Set_Framerate(30);
 }
 
 void Collision(RigidBody* rb){
