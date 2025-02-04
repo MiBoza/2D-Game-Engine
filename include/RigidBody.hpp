@@ -18,7 +18,6 @@ public:
     RigidBody(const Uint32& delta_time, const TextureManager* p_texture_manager);
     void Rigid_Update();
     void Collide(const Line& line); //Calculates collision with a line
-private:
 };
 
 #endif //RigidBody_hpp

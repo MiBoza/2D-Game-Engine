@@ -4,10 +4,21 @@
 Vector2 size({20, 20});
 Vector2 window_res = {900, 600};
 RigidBody* circle = NULL;
+bool* runningP;
 // RigidBody* square = NULL;
 // RigidBody* square2 = NULL;
 
+void ByeBye_Circle(){
+    circle->Destroy();
+    circle = NULL;
+}
+
+void End_Game(){
+    *runningP = 0;
+}
+
 void Game::SetUp(){
+    runningP = &running;
     Vector2 texture_res({787, 787});
 
     int circle_index = texture_manager->Load("assets/Circle.png", texture_res);
@@ -15,12 +26,14 @@ void Game::SetUp(){
 
     circle = AddRigidBody();
     circle->Set_Texture(circle_index);
-    // circle->Set_Pos({350, 500});
     circle->Set_Pos({840, 70});
     circle->Set_Size(size);
-    circle->velocity = {-0.35, -0.275};
-    // circle->acceleration = {0.01, 0.015};
-    circle->acceleration = {-0.01, 0.0};
+    circle->velocity = {-0.65, -0.275};
+    circle->acceleration = {-0.000, 0.006};
+
+    AddEvent(10000, 2999, ByeBye_Circle);
+    AddEvent(11500, 1999, End_Game);
+
     //
     // square = AddRigidBody();
     // square->Set_Texture(square_index);
@@ -35,7 +48,7 @@ void Game::SetUp(){
     // square2->Set_Size(size*1.2);
     // square2->velocity = {0.3,-0.2};
 
-    Set_Framerate(30);
+    // Set_Framerate(30);
 }
 
 void Collision(RigidBody* rb){
@@ -66,52 +79,16 @@ void Collision(RigidBody* rb){
 }
 
 void Game::Update(){
-    // Print_Vector2("\nb. pos = ", circle->Get_Pos());
-    // Print_Vector2("b. vel = ", circle->velocity);
-
-    // static int count = 3;
-    // if(count-- == 0)
-    //     running = 0;
-
-    Collision(circle);
-
-    // Print_Vector2("a. pos = ", circle->Get_Pos());
-    // Print_Vector2("a. vel = ", circle->velocity);
-
-
-    // if(circle){
-    //     Collision(circle);
-    //     if(runtime > 7000){
-    //         circle->Destroy();
-    //         circle = NULL;
-    //     }
-    // }
-    //
-    // if(square){
-    //     Collision(square);
-    //     if(runtime > 4000){
-    //         square->Destroy();
-    //         square = NULL;
-    //     }
-    // }
-    //
-    // if(square2){
-    //     Collision(square2);
-    //     if(runtime > 6000){
-    //         square2->Destroy();
-    //         square2 = NULL;
-    //     }
-    // }
-    // if(runtime > 1800)
-    //     running = 0;
+    if(circle)
+        Collision(circle);
 }
 
 int main(){
     Game* game = new Game("Mystery Title", 900, 600, 0);
     game->SetUp();
-    // game->delta_time = 25;
 
     while(game->running){
+        game->Input_Handler();
         game->Event_Handler();
         game->Timing();
         game->Update();

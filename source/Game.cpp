@@ -39,11 +39,20 @@ Game::Game(const char* title, int width, int height, bool fullscreen){
     texture_manager = new TextureManager(renderer, window_res);
 }
 
-void Game::Event_Handler(){
+void Game::Input_Handler(){
     SDL_Event event;
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT)
         running = 0;
+}
+
+void Game::Destroy_Object(Object* obj){
+    if(obj->flags & RIGID){
+        RigidBody* rb = static_cast<RigidBody*>(obj);
+        delete rb;
+    }
+    else
+        delete obj;
 }
 
 void Game::Components(){
@@ -55,12 +64,7 @@ void Game::Components(){
         Object* object = *it;
 
         if(object->flags & DELETED){
-            if(object->flags & RIGID){
-                RigidBody* rb = static_cast<RigidBody*>(object);
-                delete rb;
-            }
-            else
-                delete object;
+            Destroy_Object(object);
             it = objects.erase(it);
             continue;
         }
@@ -75,13 +79,12 @@ void Game::Components(){
     SDL_RenderPresent(renderer);
 }
 
-void Game::Render(Object* pointy){
-    if(pointy->flags & RENDER){
-        SDL_Texture* pointy_texture = texture_manager->textures[pointy->texture_index];
-        if(pointy->outdated)
-            pointy->Update_Dest();
-        // Print_Rect(pointy->destination);
-        SDL_RenderCopy(renderer, pointy_texture, &pointy->source, &pointy->destination);
+void Game::Render(Object* obj){
+    if(obj->flags & RENDER){
+        SDL_Texture* obj_texture = texture_manager->textures[obj->texture_index];
+        if(obj->outdated)
+            obj->Update_Dest();
+        SDL_RenderCopy(renderer, obj_texture, &obj->source, &obj->destination);
     }
 }
 
@@ -99,34 +102,18 @@ RigidBody* Game::AddRigidBody(){
     return pointy;
 }
 
-void Game::Timing(){
-    Uint32 current_frame = SDL_GetTicks();
-    static Uint32 last_frame = current_frame;
-    static int to_wait = 0;
-
-    delta_time = current_frame - last_frame;
-    // printf("delta_time = %i\n", delta_time);
-    to_wait += frame_delay - delta_time;
-    relaxation += to_wait;
-    if(to_wait > 0)
-        SDL_Delay(to_wait);
-
-    last_frame = current_frame;
-}
-
-void Game::Set_Framerate(float framerate){
-    frame_delay = 1000.0/framerate;
-}
-
 Game::~Game(){
     delete texture_manager;
     texture_manager = NULL;
-    // for(Object* obj : objects){
-    //     delete obj;
-    // }
-
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    for(Object* obj : objects){
+        Destroy_Object(obj);
+    }
+    for(Event* e : events){
+        delete e;
+    }
+
     Uint32 run_time = SDL_GetTicks();
     printf("Game ended after %i ms.\n", run_time);
     printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/run_time);
