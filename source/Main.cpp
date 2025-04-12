@@ -1,44 +1,53 @@
 #include "Game.hpp"
 // #include <stdio.h>
 
-Vector2 size({20, 20});
-Vector2 window_res = {900, 600};
-RigidBody* circle = NULL;
-// RigidBody* square = NULL;
-// RigidBody* square2 = NULL;
+RigidBody* circle;
+// void ByeBye_Circle(){
+//     circle->Destroy();
+//     circle = NULL;
+// }
+// void End_Game(){
+//     running = 0;
+// }
 
 void Game::SetUp(){
     Vector2 texture_res({787, 787});
+    Vector2 size({20, 20});
 
     int circle_index = texture_manager->Load("assets/Circle.png", texture_res);
-    // int square_index = texture_manager->Load("assets/Square.png", texture_res);
+    int square_index = texture_manager->Load("assets/Square.png", texture_res);
 
     circle = AddRigidBody();
     circle->Set_Texture(circle_index);
-    // circle->Set_Pos({350, 500});
-    circle->Set_Pos({60, 70});
+    circle->Set_Pos({450, 300});
     circle->Set_Size(size);
-    circle->velocity = {-0.35, -0.275};
-    // circle->acceleration = {0.01, 0.015};
-    circle->acceleration = {0.0, 0.01};
-    //
-    // square = AddRigidBody();
-    // square->Set_Texture(square_index);
-    // square->Set_Pos({50, 500});
-    // square->Set_Size(size*0.8);
-    // square->velocity = {0.2, -0.8};
-    // square->acceleration = {0, 0.015};
-    //
-    // square2 = AddRigidBody();
-    // square2->Set_Texture(square_index);
-    // square2->Set_Pos({350, 400});
-    // square2->Set_Size(size*1.2);
-    // square2->velocity = {0.3,-0.2};
+    circle->velocity = {-0.65, -0.275};
+    // circle->acceleration = {-0.001, 0.006};
 
-    // Set_Framerate(10);
+    // AddEvent(10000, 2999, ByeBye_Circle);
+    // AddEvent(11500, 1999, End_Game);
+
+    // Object* square = AddObject();
+    // square->Set_Texture(square_index);
+    // square->Set_Pos({161, 550});
+    // square->Set_Size(size);
+    // square->velocity = {0.2, -0.8};
+
+    // Object* square2 = AddObject();
+    // square2->Set_Texture(square_index);
+    // square2->Set_Pos({739, 550});
+    // square2->Set_Size(size);
+    //
+    // Object* square3 = AddObject();
+    // square3->Set_Texture(square_index);
+    // square3->Set_Pos({450, 50});
+    // square3->Set_Size(size);
+
+    Set_Framerate(5);
 }
 
 void Collision(RigidBody* rb){
+    Vector2 size = rb->Get_Size();
     const static int left_edge = size.x/2;
     const static int right_edge = window_res.x - size.x/2;
     const static int top_edge = size.y/2;
@@ -66,52 +75,21 @@ void Collision(RigidBody* rb){
 }
 
 void Game::Update(){
-    // Print_Vector2("\nb. pos = ", circle->Get_Pos());
-    // Print_Vector2("b. vel = ", circle->velocity);
-
-    // static int count = 3;
-    // if(count-- == 0)
-    //     running = 0;
-
-    Collision(circle);
-
-    // Print_Vector2("a. pos = ", circle->Get_Pos());
-    // Print_Vector2("a. vel = ", circle->velocity);
-
-
-    // if(circle){
-    //     Collision(circle);
-    //     if(runtime > 7000){
-    //         circle->Destroy();
-    //         circle = NULL;
-    //     }
-    // }
-    //
-    // if(square){
+    puts("1. Squat");
+    if(circle)
+        Collision(circle);
+    // if(square)
     //     Collision(square);
-    //     if(runtime > 4000){
-    //         square->Destroy();
-    //         square = NULL;
-    //     }
-    // }
-    //
-    // if(square2){
+    // if(square2)
     //     Collision(square2);
-    //     if(runtime > 6000){
-    //         square2->Destroy();
-    //         square2 = NULL;
-    //     }
-    // }
-    // if(runtime > 1800)
-    //     running = 0;
 }
 
 int main(){
-    Game* game = new Game("Mystery Title", 900, 600, 0);
+    Game* game = new Game("Mystery Title");
     game->SetUp();
-    // game->delta_time = 25;
 
-    while(game->running){
+    while(running){
+        game->Input_Handler();
         game->Event_Handler();
         game->Timing();
         game->Update();
