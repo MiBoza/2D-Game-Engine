@@ -1,7 +1,7 @@
 #include "Object.hpp"
 
-Object::Object(const TextureManager* p_texture_manager):
-    texture_manager(p_texture_manager), size({60, 60}){}
+Object::Object(const TextureManager* p_texture_manager, RigidBody* p_rb):
+    texture_manager(p_texture_manager), rb(p_rb), size({60, 60}){}
 
 void Object::Set_Pos(const Vector2& p_pos){
     pos = p_pos;
@@ -22,6 +22,10 @@ void Object::Set_Texture(const int index){
 
 Vector2 Object::Get_Pos(){
     return pos;
+}
+
+Vector2 Object::Get_Size(){
+    return size;
 }
 
 void Object::Update_Dest(){

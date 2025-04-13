@@ -7,13 +7,17 @@ void Print_Rect(const SDL_Rect& rect){
 
 Game::Game(const char* title, bool fullscreen){
     int flags = 0;
+    Vector2& window_res = Game::window_res;
+    if( Is_Zero(window_res) )
+        window_res = {900, 600};
+    Print_Vector2("window_res = ", window_res);
+
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
         window_res.x = 1920;
         window_res.y = 1080;
     }
 
-    running = 0;
     if(SDL_INIT_EVERYTHING == 0){
         puts("SDL couldn't initialise");
         exit(1);

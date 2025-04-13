@@ -5,8 +5,6 @@
 using std::list;
 
 void Print_Rect(const SDL_Rect& rect);
-bool running;
-Vector2 window_res = {900, 600};
 
 struct Event{
     int start, finish;
@@ -27,7 +25,10 @@ public:
     void Timing(Uint32 time_limit = 0);
     void Set_Framerate(float framerate);
     void Event_Handler();
-    Uint32 delta_time;
+    Uint32 current_frame;
+    inline static bool running = 0;
+    inline static Uint32 delta_time;
+    inline static Vector2 window_res;
 private:
     void Render(Object* obj);
     float frame_delay = 40;
