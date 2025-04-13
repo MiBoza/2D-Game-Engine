@@ -6,10 +6,10 @@ CFLAGS = -std=c++20 -w -fmax-errors=6 $(purpose)
 LFLAGS = -lSDL2_image -lSDL2
 Include = -I include
 
-all: Vector2 TextureManager Object Game Main Join
+all: Vector2 TextureManager Object RigidBody Game Timing Main Join
 
 Join:
-	$(CC) $(purpose) out/Main.a out/Game.a out/Game_Timing.a out/Object.a out/RigidBody.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
+	$(CC) $(purpose) out/Main.a out/Game_Timing.a out/Game.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
 HotFix:
 	$(CC) $(CFLAGS) $(Include) source/Hot_Fix.cpp -o Hot_Fix.obj
 Main:

@@ -26,10 +26,10 @@ void Game::SetUp(){
 
     circle = AddRigidBody();
     circle->Set_Texture(circle_index);
-    circle->Set_Pos({840, 70});
+    circle->Set_Pos({840, 470});
     circle->Set_Size(size);
     circle->velocity = {-0.65, -0.275};
-    circle->acceleration = {-0.000, 0.006};
+    circle->acceleration = {-0.003, -0.006};
 
     AddEvent(10000, 2999, ByeBye_Circle);
     AddEvent(11500, 1999, End_Game);
