@@ -1,11 +1,19 @@
 #ifndef Game_Timing_hpp
 #define Game_Timing_hpp
 
-#include <iostream>
 #include "Game.hpp"
 
-void Game::Timing(){
-    Uint32 current_frame = SDL_GetTicks();
+// define time_limit = 35000;
+
+void Game::Timing(Uint32 time_limit){
+    current_frame = SDL_GetTicks();
+    #ifdef time_limit
+    if(current_frame > 3000){
+        running = 0;
+        puts("Dying");
+    }
+    #endif
+
     static Uint32 last_frame = current_frame;
     static int to_wait = 0;
 
@@ -45,7 +53,7 @@ void Game::Event_Handler(){
     if(events.size() == 0)
         return;
 
-    Uint32 now = SDL_GetTicks();
+    Uint32& now = current_frame;
     typename list<Event*>::iterator it = events.begin();
     while( it != events.end() ){
         if((*it)->start > now)

@@ -13,25 +13,26 @@ struct Event{
 
 class Game{
 public:
-    Game(const char* title, int width, int height, bool fullscreen);
+    Game(const char* title, bool fullscreen = 0);
     void Input_Handler();
     void Components();
     void SetUp();
-    Object* AddObject();
-    RigidBody* AddRigidBody();
+    Object* AddObject(RigidBody* p_rb = NULL);
+    RigidBody* AddRigidBody(Object* object = NULL);
     void AddEvent(int start, int finish, void (*f)() );
     void Update();
     ~Game();
-    void Timing();
+    void Timing(Uint32 time_limit = 0);
     void Set_Framerate(float framerate);
     void Event_Handler();
-    Uint32 delta_time;
-    bool running;
+    Uint32 current_frame;
+    inline static bool running = 0;
+    inline static Uint32 delta_time;
+    inline static Vector2 window_res;
 private:
     void Render(Object* obj);
     float frame_delay = 40;
     Uint32 relaxation = 0;
-    Vector2 window_res;
     SDL_Window* window;
     SDL_Renderer* renderer;
     TextureManager* texture_manager;

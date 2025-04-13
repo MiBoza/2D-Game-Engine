@@ -1,19 +1,18 @@
 #include "RigidBody.hpp"
 
-RigidBody::RigidBody(const Uint32& p_delta_time, const TextureManager* p_texture_manager):
-    delta_time(p_delta_time),
-    Object(p_texture_manager){
-    flags |= RIGID;
+RigidBody::RigidBody(const Uint32& p_delta_time, Object* p_object):
+    object(p_object), delta_time(p_delta_time){
 }
 
 void RigidBody::Rigid_Update(){
-    outdated = 1;
+    Vector2 pos = Get_Pos();
     pos += velocity*delta_time;
     if(Not_Zero(acceleration)){
         Vector2 tempy = acceleration*delta_time;
         pos += tempy*delta_time/2;
         velocity += tempy;
     }
+    Set_Pos(pos);
 }
 
 void RigidBody::Collide(const Line& line){
@@ -65,4 +64,24 @@ void RigidBody::Collide(const Line& line){
 
     //Write results;
     Set_Pos(p1);
+}
+
+void RigidBody::Set_Texture(const int index){
+    object->Set_Texture(index);
+}
+
+void RigidBody::Set_Pos(const Vector2& p_pos){
+    object->Set_Pos(p_pos);
+}
+
+void RigidBody::Set_Size(const Vector2& p_size){
+    object->Set_Size(p_size);
+}
+
+Vector2 RigidBody::Get_Pos(){
+    return object->Get_Pos();
+}
+
+Vector2 RigidBody::Get_Size(){
+    return object->Get_Size();
 }

@@ -49,6 +49,13 @@ bool Not_Zero(const Vector2& u){
         return 0;
 }
 
+bool Is_Zero(const Vector2& u){
+    if(u.x || u.y)
+        return 0;
+    else
+        return 1;
+}
+
 void operator+=(Vector2& u, const Vector2& v){
     u.x += v.x;
     u.y += v.y;

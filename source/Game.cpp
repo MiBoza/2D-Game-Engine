@@ -5,28 +5,31 @@ void Print_Rect(const SDL_Rect& rect){
     printf("[%i, %i, %i, %i]\n", rect.x, rect.y, rect.h, rect.w);
 }
 
-Game::Game(const char* title, int width, int height, bool fullscreen){
+Game::Game(const char* title, bool fullscreen){
     int flags = 0;
+    Vector2& window_res = Game::window_res;
+    if( Is_Zero(window_res) )
+        window_res = {900, 600};
+    Print_Vector2("window_res = ", window_res);
+
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
-        width = 1920;
-        height = 1080;
+        window_res.x = 1920;
+        window_res.y = 1080;
     }
 
-    running = 0;
     if(SDL_INIT_EVERYTHING == 0){
         puts("SDL couldn't initialise");
         exit(1);
     }
     int pos_x, pos_y;
     pos_x = pos_y = SDL_WINDOWPOS_CENTERED;
-    window = SDL_CreateWindow(title, pos_x, pos_y, width, height, flags);
+    window = SDL_CreateWindow(title, pos_x, pos_y, window_res.x, window_res.y, flags);
     if(!window){
         puts("Window couldn't open correctly");
         exit(1);
     }
 
-    window_res = {width, height};
     renderer = SDL_CreateRenderer(window, -1, 0);
     if(!renderer){
         puts("Renderer didn't initialise");
@@ -47,12 +50,9 @@ void Game::Input_Handler(){
 }
 
 void Game::Destroy_Object(Object* obj){
-    if(obj->flags & RIGID){
-        RigidBody* rb = static_cast<RigidBody*>(obj);
-        delete rb;
-    }
-    else
-        delete obj;
+    if(obj->rb)
+        delete obj->rb;
+    delete obj;
 }
 
 void Game::Components(){
@@ -71,8 +71,8 @@ void Game::Components(){
         ++it;
         if(object->flags & RENDER)
             Render(object);
-        if(object->flags & RIGID){
-            RigidBody* rb = static_cast<RigidBody*>(object);
+        if(object->rb){
+            RigidBody* rb = object->rb;
             rb->Rigid_Update();
         }
     }
@@ -88,18 +88,18 @@ void Game::Render(Object* obj){
     }
 }
 
-Object* Game::AddObject(){
-    Object* pointy = new Object(texture_manager);
-    pointy->pos = window_res/2;
-    objects.push_back(pointy);
-    return pointy;
+Object* Game::AddObject(RigidBody* p_rb){
+    Object* object = new Object(texture_manager, p_rb);
+    object->pos = window_res/2;
+    objects.push_back(object);
+    return object;
 }
 
-RigidBody* Game::AddRigidBody(){
-    RigidBody* pointy = new RigidBody(delta_time, texture_manager);
-    pointy->pos = window_res/2;
-    objects.push_back(pointy);
-    return pointy;
+RigidBody* Game::AddRigidBody(Object* object){
+    RigidBody* rb = new RigidBody(delta_time, object);
+    if(!rb->object)
+        rb->object = AddObject(rb);
+    return rb;
 }
 
 Game::~Game(){

@@ -11,17 +11,19 @@ enum ObjectFlags{
     RIGID   = 0x4
 };
 
-// ObjectFlags operator|=(ObjectFlags flags, int i);
+class RigidBody;
 
 class Object{
 public:
     int texture_index;
+    RigidBody* rb;
 
-    Object(const TextureManager* p_texture_manager);
+    Object(const TextureManager* p_texture_manager, RigidBody* p_rb = NULL);
     void Set_Pos(const Vector2& p_pos);
     void Set_Size(const Vector2& p_size);
     void Set_Texture(const int index);
     Vector2 Get_Pos();
+    Vector2 Get_Size();
     void Update_Dest();
     void Destroy();
     friend class Game;
