@@ -8,7 +8,6 @@ enum ObjectFlags{
     EMPTY   = 0x0,
     DELETED = 0x1,
     RENDER  = 0x2,
-    RIGID   = 0x4
 };
 
 class RigidBody;

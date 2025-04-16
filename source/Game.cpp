@@ -10,7 +10,7 @@ Game::Game(const char* title, bool fullscreen){
     Vector2& window_res = Game::window_res;
     if( Is_Zero(window_res) )
         window_res = {900, 600};
-    Print_Vector2("window_res = ", window_res);
+    // Print_Vector2("window_res = ", window_res);
 
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
@@ -80,12 +80,10 @@ void Game::Components(){
 }
 
 void Game::Render(Object* obj){
-    if(obj->flags & RENDER){
-        SDL_Texture* obj_texture = texture_manager->textures[obj->texture_index];
-        if(obj->outdated)
-            obj->Update_Dest();
-        SDL_RenderCopy(renderer, obj_texture, &obj->source, &obj->destination);
-    }
+    SDL_Texture* obj_texture = texture_manager->textures[obj->texture_index];
+    if(obj->outdated)
+        obj->Update_Dest();
+    SDL_RenderCopy(renderer, obj_texture, &obj->source, &obj->destination);
 }
 
 Object* Game::AddObject(RigidBody* p_rb){
