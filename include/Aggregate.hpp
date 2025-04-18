@@ -1,5 +1,5 @@
-#ifndef Game_hpp
-#define Game_hpp
+#ifndef Aggregate_hpp
+#define Aggregate_hpp
 
 #include "RigidBody.hpp"
 using std::list;
@@ -11,34 +11,33 @@ struct Event{
     void (*f)();
 };
 
-class Game{
+class Aggregate{
 public:
-    Game(const char* title, bool fullscreen = 0);
+    Aggregate(const char* title, bool fullscreen = 0);
     void Input_Handler();
     void Components();
-    void SetUp();
+    void Timing();
+    ~Aggregate();
+    bool running = 0;
+protected:
     Object* AddObject(RigidBody* p_rb = NULL);
     RigidBody* AddRigidBody(Object* object = NULL);
     void AddEvent(int start, int finish, void (*f)() );
-    void Update();
-    ~Game();
-    void Timing(Uint32 time_limit = 0);
     void Set_Framerate(float framerate);
     void Event_Handler();
     Uint32 current_frame;
-    inline static bool running = 0;
-    inline static Uint32 delta_time;
-    inline static Vector2 window_res;
+    Uint32 delta_time;
+    Vector2 window_res = {900, 600};
+    TextureManager* texture_manager;
 private:
     void Render(Object* obj);
     float frame_delay = 40;
     Uint32 relaxation = 0;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    TextureManager* texture_manager;
     list<Object*> objects;
     list<Event*> events;
     void Destroy_Object(Object* obj);
 };
 
-#endif //Game_hpp
+#endif //Aggregate_hpp

@@ -13,7 +13,7 @@ public:
     SDL_Texture* Assign(const char* path);
     ~TextureManager();
     friend class Object;
-    friend class Game;
+    friend class Aggregate;
 private:
     std::vector<SDL_Texture*> textures;
     std::vector<Vector2> resolutions;

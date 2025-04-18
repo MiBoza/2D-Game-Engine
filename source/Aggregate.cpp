@@ -1,16 +1,13 @@
-#include "Game.hpp"
+#include "Aggregate.hpp"
 using std::list;
 
 void Print_Rect(const SDL_Rect& rect){
     printf("[%i, %i, %i, %i]\n", rect.x, rect.y, rect.h, rect.w);
 }
 
-Game::Game(const char* title, bool fullscreen){
+Aggregate::Aggregate(const char* title, bool fullscreen){
     int flags = 0;
-    Vector2& window_res = Game::window_res;
-    if( Is_Zero(window_res) )
-        window_res = {900, 600};
-    Print_Vector2("window_res = ", window_res);
+    Vector2& window_res = Aggregate::window_res;
 
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
@@ -42,20 +39,20 @@ Game::Game(const char* title, bool fullscreen){
     texture_manager = new TextureManager(renderer, window_res);
 }
 
-void Game::Input_Handler(){
+void Aggregate::Input_Handler(){
     SDL_Event event;
     SDL_PollEvent(&event);
     if(event.type == SDL_QUIT)
         running = 0;
 }
 
-void Game::Destroy_Object(Object* obj){
+void Aggregate::Destroy_Object(Object* obj){
     if(obj->rb)
         delete obj->rb;
     delete obj;
 }
 
-void Game::Components(){
+void Aggregate::Components(){
     //Looks through the list of objects and
     //Renders or calculates physics as required
     SDL_RenderClear(renderer);
@@ -79,30 +76,28 @@ void Game::Components(){
     SDL_RenderPresent(renderer);
 }
 
-void Game::Render(Object* obj){
-    if(obj->flags & RENDER){
-        SDL_Texture* obj_texture = texture_manager->textures[obj->texture_index];
-        if(obj->outdated)
-            obj->Update_Dest();
-        SDL_RenderCopy(renderer, obj_texture, &obj->source, &obj->destination);
-    }
+void Aggregate::Render(Object* obj){
+    SDL_Texture* obj_texture = texture_manager->textures[obj->texture_index];
+    if(obj->outdated)
+        obj->Update_Dest();
+    SDL_RenderCopy(renderer, obj_texture, &obj->source, &obj->destination);
 }
 
-Object* Game::AddObject(RigidBody* p_rb){
+Object* Aggregate::AddObject(RigidBody* p_rb){
     Object* object = new Object(texture_manager, p_rb);
     object->pos = window_res/2;
     objects.push_back(object);
     return object;
 }
 
-RigidBody* Game::AddRigidBody(Object* object){
+RigidBody* Aggregate::AddRigidBody(Object* object){
     RigidBody* rb = new RigidBody(delta_time, object);
     if(!rb->object)
         rb->object = AddObject(rb);
     return rb;
 }
 
-Game::~Game(){
+Aggregate::~Aggregate(){
     delete texture_manager;
     texture_manager = NULL;
     SDL_DestroyRenderer(renderer);
@@ -114,9 +109,8 @@ Game::~Game(){
         delete e;
     }
 
-    Uint32 run_time = SDL_GetTicks();
-    printf("Game ended after %i ms.\n", run_time);
-    printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/run_time);
+    printf("Aggregate ended after %i ms.\n", current_frame);
+    printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/current_frame);
     puts("%).");
     SDL_Quit();
 }

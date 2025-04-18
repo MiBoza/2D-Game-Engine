@@ -1,14 +1,14 @@
-#ifndef Game_Timing_hpp
-#define Game_Timing_hpp
+#ifndef Timing_hpp
+#define Timing_hpp
 
-#include "Game.hpp"
+#include "Aggregate.hpp"
 
 // define time_limit = 35000;
 
-void Game::Timing(Uint32 time_limit){
+void Aggregate::Timing(){
     current_frame = SDL_GetTicks();
     #ifdef time_limit
-    if(current_frame > 3000){
+    if(current_frame > time_limit){
         running = 0;
         puts("Dying");
     }
@@ -26,11 +26,11 @@ void Game::Timing(Uint32 time_limit){
     last_frame = current_frame;
 }
 
-void Game::Set_Framerate(float framerate){
+void Aggregate::Set_Framerate(float framerate){
     frame_delay = 1000.0/framerate;
 }
 
-void Game::AddEvent(int start, int finish, void (*f)() ){
+void Aggregate::AddEvent(int start, int finish, void (*f)() ){
     Event* e = new Event(start, finish, f);
     if(events.size() == 0){
         events.push_back(e);
@@ -49,7 +49,7 @@ void Game::AddEvent(int start, int finish, void (*f)() ){
     events.insert(it, e);
 }
 
-void Game::Event_Handler(){
+void Aggregate::Event_Handler(){
     if(events.size() == 0)
         return;
 
@@ -67,4 +67,4 @@ void Game::Event_Handler(){
     }
 }
 
-#endif //Game_Timing_hpp
+#endif //Timing_hpp

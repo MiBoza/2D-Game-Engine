@@ -26,7 +26,7 @@ public:
     Vector2 Get_Size();
     void Update_Dest();
     void Destroy();
-    friend class Game;
+    friend class Aggregate;
 protected:
     const TextureManager* texture_manager;
     bool outdated = 1;

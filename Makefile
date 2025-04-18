@@ -1,12 +1,19 @@
-CC = g++
-debug = -g -fsanitize=address
-release = -s -O3
-purpose = $(debug)
-CFLAGS = -std=c++20 -w -fmax-errors=6 $(purpose)
-LFLAGS = -lSDL2_image -lSDL2
-Include = -I include
+CC := g++
+purpose := "debug"
+LFLAGS := -lSDL2_image -lSDL2
+Include := -I include
 
-all: Vector2 TextureManager Object RigidBody Game Timing Main Join
+ifeq ($(purpose), "release")
+	CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
+	target := release.obj
+else
+	CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
+	target := debug.obj
+endif
+
+auxiliaries := out/Timing.a out/Aggregate.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a
+
+all: Vector2 TextureManager Object RigidBody Aggregate Timing Main Join
 
 Join:
 	$(CC) $(purpose) out/Main.a out/Game_Timing.a out/Game.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
@@ -15,9 +22,9 @@ HotFix:
 Main:
 	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o out/Main.a
 Timing:
-	$(CC) $(CFLAGS) $(Include) -c source/Game_Timing.cpp -o out/Game_Timing.a
-Game:
-	$(CC) $(CFLAGS) $(Include) -c source/Game.cpp -o out/Game.a
+	$(CC) $(CFLAGS) $(Include) -c source/Timing.cpp -o out/Timing.a
+Aggregate:
+	$(CC) $(CFLAGS) $(Include) -c source/Aggregate.cpp -o out/Aggregate.a
 RigidBody:
 	$(CC) $(CFLAGS) $(Include) -c source/RigidBody.cpp -o out/RigidBody.a
 Object:
