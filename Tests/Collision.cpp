@@ -1,7 +1,7 @@
 #include "Game.hpp"
 // #include <stdio.h>
 
-bool& running = Game::running;
+// bool Game::running;
 // Uint32 Game::delta_time;
 // Vector2 Game::window_res = {900, 600};
 
@@ -13,15 +13,6 @@ RigidBody* square;
 // void End_Game(){
 //     Game::running = 0;
 // }
-
-// void ByeBye_Circle(){
-//     circle->Destroy();
-//     circle = NULL;
-// }
-
-void End_Game(){
-    running = 0;
-}
 
 void Game::SetUp(){
     Vector2 texture_res({787, 787});
@@ -38,7 +29,7 @@ void Game::SetUp(){
     // circle->acceleration = {-0.001, 0.006};
 
     // AddEvent(10000, 2999, ByeBye_Circle);
-    AddEvent(11500, 1999, End_Game);
+    // AddEvent(11500, 1999, End_Game);
 
     square = AddRigidBody();
     square->Set_Texture(square_sprite_id);

@@ -23,6 +23,6 @@ void operator+=(Vector2& u, const Vector2& v);
 void operator*=(Vector2& u, float A);
 Vector2 operator*(const Vector2& u, float A);
 Vector2 operator*(float A, const Vector2& u);
-void Print_Vector2(const char* name, const Vector2& u);
+void Print_Vector2(const char* string, const Vector2& u);
 
 #endif //Vector2_hpp

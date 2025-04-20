@@ -8,6 +8,11 @@ void Object::Set_Pos(const Vector2& p_pos){
     outdated = 1;
 }
 
+void Object::Set_Pos(Vector2&& p_pos){
+    pos = p_pos;
+    outdated = 1;
+}
+
 void Object::Set_Size(const Vector2& p_size){
     size = p_size;
     outdated = 1;

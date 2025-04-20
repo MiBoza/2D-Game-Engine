@@ -11,22 +11,22 @@ else
 	target := debug.obj
 endif
 
-auxiliaries := out/Game_Timing.a out/Game.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a
+auxiliaries := out/Timing.a out/Aggregate.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a
 
-all: Vector2 TextureManager Object RigidBody Game Timing Main Join
+all: Vector2 TextureManager Object RigidBody Aggregate Timing Main Join
 
 clean:
 	rm -f $(wildcard *.obj) $(wildcard out/*)
 Join:
-	$(CC) $(CFLAGS) out/Main.a $(auxiliaries) $(LFLAGS) -o $(target)
+	$(CC) $(CFLAGS) out/Main.a out/Aggregate.a out/Timing.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
 HotFix:
 	$(CC) $(CFLAGS) $(Include) source/Hot_Fix.cpp -o Hot_Fix.obj
 Main:
 	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o out/Main.a
+Aggregate:
+	$(CC) $(CFLAGS) $(Include) -c source/Aggregate.cpp -o out/Aggregate.a
 Timing:
-	$(CC) $(CFLAGS) $(Include) -c source/Game_Timing.cpp -o out/Game_Timing.a
-Game:
-	$(CC) $(CFLAGS) $(Include) -c source/Game.cpp -o out/Game.a
+	$(CC) $(CFLAGS) $(Include) -c source/Timing.cpp -o out/Timing.a
 RigidBody:
 	$(CC) $(CFLAGS) $(Include) -c source/RigidBody.cpp -o out/RigidBody.a
 Object:

@@ -76,6 +76,6 @@ Vector2 operator*(float A, const Vector2& u){
     return result;
 }
 
-void Print_Vector2(const char* name, const Vector2& u){
-    printf("%s[%.2f, %.2f]\n", name, u.x, u.y);
+void Print_Vector2(const char* string, const Vector2& u){
+    printf("%s[%.2f, %.2f]\n", string, u.x, u.y);
 }
