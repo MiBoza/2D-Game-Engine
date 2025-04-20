@@ -16,15 +16,15 @@ auxiliaries := out/Timing.a out/Aggregate.a out/RigidBody.a out/Object.a out/Tex
 all: Vector2 TextureManager Object RigidBody Aggregate Timing Main Join
 
 Join:
-	$(CC) $(purpose) out/Main.a out/Game_Timing.a out/Game.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
+	$(CC) $(CFLAGS) out/Main.a out/Aggregate.a out/Timing.a out/RigidBody.a out/Object.a out/TextureManager.a out/Vector2.a $(LFLAGS) -o debug.obj
 HotFix:
 	$(CC) $(CFLAGS) $(Include) source/Hot_Fix.cpp out/Vector2.a -o Hot_Fix.obj
 Main:
 	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o out/Main.a
-Timing:
-	$(CC) $(CFLAGS) $(Include) -c source/Timing.cpp -o out/Timing.a
 Aggregate:
 	$(CC) $(CFLAGS) $(Include) -c source/Aggregate.cpp -o out/Aggregate.a
+Timing:
+	$(CC) $(CFLAGS) $(Include) -c source/Timing.cpp -o out/Timing.a
 RigidBody:
 	$(CC) $(CFLAGS) $(Include) -c source/RigidBody.cpp -o out/RigidBody.a
 Object:

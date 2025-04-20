@@ -3,12 +3,12 @@
 
 #include "Aggregate.hpp"
 
-// define time_limit = 35000;
+// #define time_limit;
 
 void Aggregate::Timing(){
     current_frame = SDL_GetTicks();
     #ifdef time_limit
-    if(current_frame > time_limit){
+    if(current_frame > 10411){
         running = 0;
         puts("Dying");
     }

@@ -109,6 +109,9 @@ Aggregate::~Aggregate(){
         delete e;
     }
 
+    if(relaxation > current_frame)
+        relaxation = current_frame;
+
     printf("Aggregate ended after %i ms.\n", current_frame);
     printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/current_frame);
     puts("%).");

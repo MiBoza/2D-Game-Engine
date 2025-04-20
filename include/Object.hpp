@@ -20,6 +20,7 @@ public:
 
     Object(const TextureManager* p_texture_manager, RigidBody* p_rb = NULL);
     void Set_Pos(const Vector2& p_pos);
+    void Set_Pos(Vector2&& p_pos);
     void Set_Size(const Vector2& p_size);
     void Set_Texture(const int index);
     Vector2 Get_Pos();
