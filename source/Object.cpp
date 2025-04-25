@@ -1,7 +1,11 @@
 #include "Object.hpp"
 
-Object::Object(const TextureManager* p_texture_manager, RigidBody* p_rb):
-    texture_manager(p_texture_manager), rb(p_rb), size({60, 60}){}
+void Print_Rect(const char* string, const SDL_Rect& rect){
+    printf("%s[%i, %i, %i, %i]\n", string, rect.x, rect.y, rect.h, rect.w);
+}
+
+Object::Object(RigidBody* p_rb):
+    rb(p_rb), size({60, 60}){}
 
 void Object::Set_Pos(const Vector2& p_pos){
     pos = p_pos;
@@ -16,13 +20,6 @@ void Object::Set_Pos(Vector2&& p_pos){
 void Object::Set_Size(const Vector2& p_size){
     size = p_size;
     outdated = 1;
-}
-
-void Object::Set_Texture(const int index){
-    flags |= RENDER;
-    texture_index = index;
-    Vector2 texture_res = texture_manager->resolutions[texture_index];
-    source = {0, 0, texture_res.x, texture_res.y};
 }
 
 Vector2 Object::Get_Pos(){

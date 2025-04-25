@@ -4,26 +4,34 @@
 #include "Aggregate.hpp"
 
 // #define time_limit;
+// #define frame_limit;
 
 void Aggregate::Timing(){
-    current_frame = SDL_GetTicks();
+    runtime = SDL_GetTicks();
+    ++frame_number;
     #ifdef time_limit
-    if(current_frame > 10411){
+    if(runtime > 2411){
+        running = 0;
+        puts("Dying");
+    }
+    #endif
+    #ifdef frame_limit
+    if(frame_number > 5){
         running = 0;
         puts("Dying");
     }
     #endif
 
-    static Uint32 last_frame = current_frame;
+    static Uint32 last_frame = runtime;
     static int to_wait = 0;
 
-    delta_time = current_frame - last_frame;
+    delta_time = runtime - last_frame;
     to_wait += frame_delay - delta_time;
     relaxation += to_wait;
     if(to_wait > 0)
         SDL_Delay(to_wait);
 
-    last_frame = current_frame;
+    last_frame = runtime;
 }
 
 void Aggregate::Set_Framerate(float framerate){
@@ -53,7 +61,7 @@ void Aggregate::Event_Handler(){
     if(events.size() == 0)
         return;
 
-    Uint32& now = current_frame;
+    Uint32& now = runtime;
     typename list<Event*>::iterator it = events.begin();
     while( it != events.end() ){
         if((*it)->start > now)

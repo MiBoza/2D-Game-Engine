@@ -18,7 +18,6 @@ public:
     RigidBody(const Uint32& p_delta_time, Object* p_object);
     void Rigid_Update();
     void Collide(const Line& line); //Calculates collision with a line
-    void Set_Texture(const int index);
     void Set_Pos(const Vector2& p_pos);
     void Set_Size(const Vector2& p_size);
 

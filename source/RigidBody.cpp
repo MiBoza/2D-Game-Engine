@@ -66,10 +66,6 @@ void RigidBody::Collide(const Line& line){
     Set_Pos(p1);
 }
 
-void RigidBody::Set_Texture(const int index){
-    object->Set_Texture(index);
-}
-
 void RigidBody::Set_Pos(const Vector2& p_pos){
     object->Set_Pos(p_pos);
 }

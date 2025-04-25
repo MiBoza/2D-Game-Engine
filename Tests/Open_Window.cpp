@@ -1,7 +1,7 @@
-#include "Game.hpp"
+#include "Aggregate.hpp"
 
 int main(){
-    Game* game = new Game("Window Title");
+    Aggregate* game = new Aggregate("Window Title");
 
     while(game->running){
         game->Input_Handler();

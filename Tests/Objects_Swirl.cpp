@@ -15,8 +15,6 @@ class Game : public Aggregate{
 public:
     void SetUp();
     void Update();
-    // ~Game(){
-    // }
 };
 
 Object* Game::Init_Object(int sprite_id){
@@ -57,12 +55,12 @@ Vector2 Swirl(float degrees){
 void Game::Update(){
     const static float frequency = 0.12;
 
-    circle1->Set_Pos( Swirl(frequency*current_frame +   0) );
-    circle2->Set_Pos( Swirl(frequency*current_frame +  24) );
-    square1->Set_Pos( Swirl(frequency*current_frame +  48) );
-    square2->Set_Pos( Swirl(frequency*current_frame +  72) );
-    square3->Set_Pos( Swirl(frequency*current_frame +  96) );
-    circle3->Set_Pos( Swirl(frequency*current_frame + 120) );
+    circle1->Set_Pos( Swirl(frequency*runtime +   0) );
+    circle2->Set_Pos( Swirl(frequency*runtime +  24) );
+    square1->Set_Pos( Swirl(frequency*runtime +  48) );
+    square2->Set_Pos( Swirl(frequency*runtime +  72) );
+    square3->Set_Pos( Swirl(frequency*runtime +  96) );
+    circle3->Set_Pos( Swirl(frequency*runtime + 120) );
 }
 
 int main(){
@@ -71,7 +69,6 @@ int main(){
 
     while(game->running){
         game->Input_Handler();
-        // game->Event_Handler();
         game->Timing();
         game->Update();
         game->Components();

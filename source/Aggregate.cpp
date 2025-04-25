@@ -1,10 +1,6 @@
 #include "Aggregate.hpp"
 using std::list;
 
-void Print_Rect(const SDL_Rect& rect){
-    printf("[%i, %i, %i, %i]\n", rect.x, rect.y, rect.h, rect.w);
-}
-
 Aggregate::Aggregate(const char* title, bool fullscreen){
     int flags = 0;
     Vector2& window_res = Aggregate::window_res;
@@ -77,14 +73,13 @@ void Aggregate::Components(){
 }
 
 void Aggregate::Render(Object* obj){
-    SDL_Texture* obj_texture = texture_manager->textures[obj->texture_index];
     if(obj->outdated)
         obj->Update_Dest();
-    SDL_RenderCopy(renderer, obj_texture, &obj->source, &obj->destination);
+    SDL_RenderCopy(renderer, obj->texture, &obj->source, &obj->destination);
 }
 
 Object* Aggregate::AddObject(RigidBody* p_rb){
-    Object* object = new Object(texture_manager, p_rb);
+    Object* object = new Object(p_rb);
     object->pos = window_res/2;
     objects.push_back(object);
     return object;
@@ -109,11 +104,11 @@ Aggregate::~Aggregate(){
         delete e;
     }
 
-    if(relaxation > current_frame)
-        relaxation = current_frame;
+    if(relaxation > runtime)
+        relaxation = runtime;
 
-    printf("Aggregate ended after %i ms.\n", current_frame);
-    printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/current_frame);
+    printf("Aggregate ended after %i ms.\n", runtime);
+    printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/runtime);
     puts("%).");
     SDL_Quit();
 }

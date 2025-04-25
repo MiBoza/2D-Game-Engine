@@ -1,8 +1,12 @@
 #ifndef Object_hpp
 #define Object_hpp
 
-#include "TextureManager.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include "Vector2.hpp"
 #include <list>
+
+void Print_Rect(const char* string, const SDL_Rect& rect);
 
 enum ObjectFlags{
     EMPTY   = 0x0,
@@ -14,28 +18,27 @@ class RigidBody;
 
 class Object{
 public:
-    int texture_index;
     RigidBody* rb;
 
-    Object(const TextureManager* p_texture_manager, RigidBody* p_rb = NULL);
+    Object(RigidBody* p_rb = NULL);
     void Set_Pos(const Vector2& p_pos);
     void Set_Pos(Vector2&& p_pos);
     void Set_Size(const Vector2& p_size);
-    void Set_Texture(const int index);
     Vector2 Get_Pos();
     Vector2 Get_Size();
-    void Update_Dest();
     void Destroy();
     friend class Aggregate;
-protected:
-    const TextureManager* texture_manager;
+    friend class Atlas;
+private:
+    SDL_Texture* texture;
     bool outdated = 1;
     Vector2 pos;
     int flags = EMPTY;
-private:
     Vector2 size;
     SDL_Rect source;
     SDL_Rect destination;
+
+    void Update_Dest();
 };
 
 #endif // Object_hpp
