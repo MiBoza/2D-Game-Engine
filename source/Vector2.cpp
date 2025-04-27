@@ -22,6 +22,36 @@ float Magnitude(const Vector2& u){
     return sqrt( Magnitude_Squared(u) );
 }
 
+float Angle(const Vector2& u){
+    #define Tau 2*M_PI
+    if(u.x < 0){
+        Vector2 temp({-u.x, -u.y});
+        return fmod(Tau + Angle(temp), Tau) - M_PI;
+    }
+    if(u.x < 1e-5)
+        return u.y > 0 ? M_PI_2 : -M_PI_2;
+
+    return atan(u.y/u.x);
+}
+
+float Angle_Degrees(const Vector2& u){
+    return 180*Angle(u)/M_PI;
+}
+
+Vector2 Polar_Constructor(float magnitude, float angle){
+    // Vector2 u( { magnitude*cos(angle), magnitude*sin(angle) } );
+    Vector2 u;
+    u.x = magnitude*cos(angle);
+    u.y = magnitude*sin(angle);
+
+    return u;
+}
+
+Vector2 Degree_Constructor(float magnitude, float degrees){
+    float angle = degrees*M_PI/180;
+    return Polar_Constructor(magnitude, angle);
+}
+
 Vector2 operator-(const Vector2& u, const Vector2& v){
     Vector2 result = {u.x - v.x, u.y - v.y};
     return result;

@@ -3,40 +3,48 @@
 class Game : public Aggregate{
     using Aggregate::Aggregate;
 
-    int circle_sprite_id;
-    int square_sprite_id;
-    Vector2 size = {20, 20};
+    Atlas* a_arrow;
+    Atlas* a_circle;
+    Atlas* a_square;
     Vector2 texture_res = {787, 787};
+    Vector2 arrow_pos = {450, 80};
 
-    Object *circle1, *circle2, *circle3;
-    Object *square1, *square2, *square3;
+    Object *arrow, *circle;
+    Object *square1, *square2, *square3, *square4, *square5;
 
-    Object* Init_Object(int sprite_id);
+    Object* Init_Object(Atlas* atlas, const Vector2& size);
 public:
     void SetUp();
     void Update();
 };
 
-Object* Game::Init_Object(int sprite_id){
+Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
     Object* obj;
 
     obj = AddObject();
-    obj->Set_Texture(sprite_id);
+    atlas->Assign_Sprite(obj);
     obj->Set_Size(size);
 
     return obj;
 }
 
 void Game::SetUp(){
-    circle_sprite_id = texture_manager->Load("assets/Circle.png", texture_res);
-    square_sprite_id = texture_manager->Load("assets/Square.png", texture_res);
+    a_arrow = texture_manager->Load("assets/Arrow.png", {787, 345});
+    a_circle = texture_manager->Load("assets/Circle.png", texture_res);
+    a_square = texture_manager->Load("assets/Square.png", texture_res);
 
-    circle1 = Init_Object(circle_sprite_id);
-    circle2 = Init_Object(circle_sprite_id);
-    circle3 = Init_Object(circle_sprite_id);
-    square1 = Init_Object(square_sprite_id);
-    square2 = Init_Object(square_sprite_id);
-    square3 = Init_Object(square_sprite_id);
+    Vector2 arrow_size({150, 50});
+    Vector2 other_size({20, 20});
+
+    arrow = Init_Object(a_arrow, arrow_size);
+    circle = Init_Object(a_circle, other_size);
+    square1 = Init_Object(a_square, other_size);
+    square2 = Init_Object(a_square, other_size);
+    square3 = Init_Object(a_square, other_size);
+    square4 = Init_Object(a_square, other_size);
+    square5 = Init_Object(a_square, other_size);
+
+    arrow->Set_Pos(arrow_pos);
 
     Set_Framerate(40);
 }
@@ -55,12 +63,18 @@ Vector2 Swirl(float degrees){
 void Game::Update(){
     const static float frequency = 0.12;
 
-    circle1->Set_Pos( Swirl(frequency*runtime +   0) );
-    circle2->Set_Pos( Swirl(frequency*runtime +  24) );
-    square1->Set_Pos( Swirl(frequency*runtime +  48) );
-    square2->Set_Pos( Swirl(frequency*runtime +  72) );
-    square3->Set_Pos( Swirl(frequency*runtime +  96) );
-    circle3->Set_Pos( Swirl(frequency*runtime + 120) );
+    square1->Set_Pos( Swirl(frequency*runtime +   0) );
+    square2->Set_Pos( Swirl(frequency*runtime +  24) );
+    square3->Set_Pos( Swirl(frequency*runtime +  48) );
+    square4->Set_Pos( Swirl(frequency*runtime +  72) );
+    square5->Set_Pos( Swirl(frequency*runtime +  96) );
+    circle->Set_Pos( Swirl(frequency*runtime + 120) );     //Lead
+
+    Vector2 lead_pos = circle->Get_Pos();
+    float degrees = Angle_Degrees(lead_pos-arrow_pos);
+
+    arrow->Rotate(degrees);
+    // arrow->Flip_Horizontally();
 }
 
 int main(){

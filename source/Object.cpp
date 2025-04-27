@@ -22,6 +22,26 @@ void Object::Set_Size(const Vector2& p_size){
     outdated = 1;
 }
 
+void Object::Rotate(float angle){
+    flags |= COPYEX;
+    rotation_angle = angle;
+}
+
+void Object::Flip_Horizontally(){
+    //Brute force, but XOR should be supported on flags
+    flags |= COPYEX;
+    int flip_i = static_cast<int>(flip);
+    flip_i ^= SDL_FLIP_HORIZONTAL;
+    flip = static_cast<SDL_RendererFlip>(flip_i);
+}
+
+void Object::Flip_Vertically(){
+    flags |= COPYEX;
+    int flip_i = static_cast<int>(flip);
+    flip_i ^= SDL_FLIP_VERTICAL;
+    flip = static_cast<SDL_RendererFlip>(flip_i);
+}
+
 Vector2 Object::Get_Pos(){
     return pos;
 }

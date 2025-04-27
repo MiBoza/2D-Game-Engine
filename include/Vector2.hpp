@@ -12,6 +12,10 @@ struct Vector2{
 
 float Magnitude_Squared(const Vector2& u);
 float Magnitude(const Vector2& u);
+float Angle(const Vector2& u);
+float Angle_Degrees(const Vector2& u);
+Vector2 Polar_Constructor(float magnitude, float angle);
+Vector2 Degree_Constructor(float magnitude, float degrees);
 Vector2 operator-(const Vector2& u, const Vector2& v);
 Vector2 operator+(const Vector2& u, const Vector2& v);
 float operator*(const Vector2& u, const Vector2& v);

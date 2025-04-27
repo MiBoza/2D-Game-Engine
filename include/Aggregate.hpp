@@ -28,8 +28,8 @@ protected:
     Uint32 runtime = 1;
     Uint32 delta_time;
     Uint32 frame_number = 0;
-    TextureManager* texture_manager;
     Vector2 window_res = {900, 600};
+    TextureManager* texture_manager;
 private:
     void Destroy_Object(Object* obj);
     void Render(Object* obj);

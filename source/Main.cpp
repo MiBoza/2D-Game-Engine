@@ -3,57 +3,88 @@
 class Game : public Aggregate{
     using Aggregate::Aggregate;
 
+    Atlas* a_arrow;
+    Atlas* a_circle;
     Atlas* a_square;
-    Atlas* a_3D;
     Vector2 texture_res = {787, 787};
-    Vector2 size = {200, 200};
+    Vector2 arrow_pos = {450, 80};
 
-    Object *square;
-    Object *cube;
-    Object *cone;
-    Object *cylinder;
+    Object *arrow, *circle;
+    Object *square1, *square2, *square3, *square4, *square5;
 
-    Object* Init_Object(Atlas* atlas, int row, int column);
+    Object* Init_Object(Atlas* atlas, const Vector2& size);
 public:
     void SetUp();
+    void Update();
 };
 
-Object* Game::Init_Object(Atlas* atlas, int row, int column){
+Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
     Object* obj;
 
     obj = AddObject();
-    atlas->Assign_Sprite(obj, row, column);
+    atlas->Assign_Sprite(obj);
     obj->Set_Size(size);
 
     return obj;
 }
 
 void Game::SetUp(){
+    a_arrow = texture_manager->Load("assets/Arrow.png", {787, 345});
+    a_circle = texture_manager->Load("assets/Circle.png", texture_res);
     a_square = texture_manager->Load("assets/Square.png", texture_res);
-    a_3D = texture_manager->Load("assets/3D.png", texture_res, 1, 3);
 
-    //Loading a single sprite
-    square = AddObject();
-    a_square->Assign_Sprite(square);
-    square->Set_Size({50, 50});
-    square->Set_Pos({25, 25});
+    Vector2 arrow_size({150, 50});
+    Vector2 other_size({20, 20});
 
-    //Loading multiple sprites from atlas
-    cube = Init_Object(a_3D, 0, 0);
-    cylinder = Init_Object(a_3D, 0, 1);
-    cone = Init_Object(a_3D, 0, 2);
+    arrow = Init_Object(a_arrow, arrow_size);
+    circle = Init_Object(a_circle, other_size);
+    square1 = Init_Object(a_square, other_size);
+    square2 = Init_Object(a_square, other_size);
+    square3 = Init_Object(a_square, other_size);
+    square4 = Init_Object(a_square, other_size);
+    square5 = Init_Object(a_square, other_size);
 
-    cube->Set_Pos({623, 470});
-    cylinder->Set_Pos({450, 170});
-    cone->Set_Pos({277, 470});
+    arrow->Set_Pos(arrow_pos);
+
+    Set_Framerate(40);
+}
+
+Vector2 Swirl(float degrees){
+    float angle = degrees*M_PI/180;
+
+    Vector2 pos;
+
+    pos.x = 450-400*cos(angle);
+    pos.y = 300-100*sin(2*angle);
+
+    return pos;
+}
+
+void Game::Update(){
+    const static float frequency = 0.12;
+
+    square1->Set_Pos( Swirl(frequency*runtime +   0) );
+    square2->Set_Pos( Swirl(frequency*runtime +  24) );
+    square3->Set_Pos( Swirl(frequency*runtime +  48) );
+    square4->Set_Pos( Swirl(frequency*runtime +  72) );
+    square5->Set_Pos( Swirl(frequency*runtime +  96) );
+    circle->Set_Pos( Swirl(frequency*runtime + 120) );     //Lead
+
+    Vector2 lead_pos = circle->Get_Pos();
+    float degrees = Angle_Degrees(lead_pos-arrow_pos);
+
+    arrow->Rotate(degrees);
+    // arrow->Flip_Horizontally();
 }
 
 int main(){
-    Game* game = new Game("Load Sprites");
+    Game* game = new Game("Infinity Swirl");
     game->SetUp();
 
     while(game->running){
         game->Input_Handler();
+        game->Timing();
+        game->Update();
         game->Components();
     }
 

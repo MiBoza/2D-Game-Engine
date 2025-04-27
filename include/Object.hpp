@@ -9,9 +9,10 @@
 void Print_Rect(const char* string, const SDL_Rect& rect);
 
 enum ObjectFlags{
-    EMPTY   = 0x0,
-    DELETED = 0x1,
-    RENDER  = 0x2,
+    EMPTY   = 0x00,
+    DELETED = 0x01,
+    RENDER  = 0x02,
+    COPYEX  = 0x04,
 };
 
 class RigidBody;
@@ -24,6 +25,9 @@ public:
     void Set_Pos(const Vector2& p_pos);
     void Set_Pos(Vector2&& p_pos);
     void Set_Size(const Vector2& p_size);
+    void Rotate(float angle);
+    void Flip_Horizontally();
+    void Flip_Vertically();
     Vector2 Get_Pos();
     Vector2 Get_Size();
     void Destroy();
@@ -33,6 +37,8 @@ private:
     SDL_Texture* texture;
     bool outdated = 1;
     Vector2 pos;
+    float rotation_angle = 0;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
     int flags = EMPTY;
     Vector2 size;
     SDL_Rect source;

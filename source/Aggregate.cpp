@@ -51,6 +51,7 @@ void Aggregate::Destroy_Object(Object* obj){
 void Aggregate::Components(){
     //Looks through the list of objects and
     //Renders or calculates physics as required
+
     SDL_RenderClear(renderer);
     typename std::list<Object*>::iterator it = objects.begin();
     for(; it != objects.end();){
@@ -75,7 +76,14 @@ void Aggregate::Components(){
 void Aggregate::Render(Object* obj){
     if(obj->outdated)
         obj->Update_Dest();
-    SDL_RenderCopy(renderer, obj->texture, &obj->source, &obj->destination);
+
+    if(obj->flags & COPYEX){
+        SDL_RenderCopyEx(renderer, obj->texture, &obj->source, &obj->destination,
+            obj->rotation_angle, NULL, obj->flip);
+    }
+    else{
+        SDL_RenderCopy(renderer, obj->texture, &obj->source, &obj->destination);
+    }
 }
 
 Object* Aggregate::AddObject(RigidBody* p_rb){
@@ -107,7 +115,7 @@ Aggregate::~Aggregate(){
     if(relaxation > runtime)
         relaxation = runtime;
 
-    printf("Aggregate ended after %i ms.\n", runtime);
+    printf("Game ended after %i ms.\n", runtime);
     printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/runtime);
     puts("%).");
     SDL_Quit();

@@ -1,5 +1,5 @@
 CC := g++
-purpose := "release"
+purpose := "debug"
 LFLAGS := -lSDL2_image -lSDL2
 Include := -I include
 
