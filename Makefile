@@ -1,7 +1,8 @@
 CC := g++
-purpose := "release"
+purpose := "debug"
 LFLAGS := -lSDL2_image -lSDL2
-Include := -I include
+Include := -I include -I Project
+source := source
 
 ifeq ($(purpose), "release")
 	CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
@@ -11,9 +12,9 @@ else
 	build := debug
 endif
 
-auxiliaries := $(build)/Aggregate.a $(build)/Timing.a $(build)/TextureManager.a $(build)/RigidBody.a $(build)/Object.a $(build)/Vector2.a
+auxiliaries := $(build)/Input_Handler.a $(build)/Aggregate.a $(build)/Timing.a $(build)/TextureManager.a $(build)/RigidBody.a $(build)/Object.a $(build)/Vector2.a
 
-all: Vector2 Object RigidBody TextureManager Aggregate Timing Main Join
+all: Vector2 Object RigidBody TextureManager Aggregate Timing Input_Handler Main Join
 run:
 	./$(build).obj
 clean:
@@ -21,18 +22,20 @@ clean:
 Join:
 	$(CC) $(CFLAGS) $(build)/Main.a $(auxiliaries) $(LFLAGS) -o $(build).obj
 HotFix:
-	$(CC) $(CFLAGS) $(Include) source/Hot_Fix.cpp $(build)/Vector2.a -o Hot_Fix.obj
+	$(CC) $(CFLAGS) $(Include) $(source)/Hot_Fix.cpp $(build)/Vector2.a -o Hot_Fix.obj
 Main:
-	$(CC) $(CFLAGS) $(Include) -c source/Main.cpp -o $(build)/Main.a
+	$(CC) $(CFLAGS) $(Include) -c Project/Main.cpp -o $(build)/Main.a
+Input_Handler:
+	$(CC) $(CFLAGS) $(Include) -c $(source)/Input_Handler.cpp -o $(build)/Input_Handler.a
 Aggregate:
-	$(CC) $(CFLAGS) $(Include) -c source/Aggregate.cpp -o $(build)/Aggregate.a
+	$(CC) $(CFLAGS) $(Include) -c $(source)/Aggregate.cpp -o $(build)/Aggregate.a
 Timing:
-	$(CC) $(CFLAGS) $(Include) -c source/Timing.cpp -o $(build)/Timing.a
+	$(CC) $(CFLAGS) $(Include) -c $(source)/Timing.cpp -o $(build)/Timing.a
 TextureManager:
-	$(CC) $(CFLAGS) $(Include) -c source/TextureManager.cpp -o $(build)/TextureManager.a
+	$(CC) $(CFLAGS) $(Include) -c $(source)/TextureManager.cpp -o $(build)/TextureManager.a
 RigidBody:
-	$(CC) $(CFLAGS) $(Include) -c source/RigidBody.cpp -o $(build)/RigidBody.a
+	$(CC) $(CFLAGS) $(Include) -c $(source)/RigidBody.cpp -o $(build)/RigidBody.a
 Object:
-	$(CC) $(CFLAGS) $(Include) -c source/Object.cpp -o $(build)/Object.a
+	$(CC) $(CFLAGS) $(Include) -c $(source)/Object.cpp -o $(build)/Object.a
 Vector2:
-	$(CC) $(CFLAGS) $(Include) -c source/Vector2.cpp -o $(build)/Vector2.a
+	$(CC) $(CFLAGS) $(Include) -c $(source)/Vector2.cpp -o $(build)/Vector2.a

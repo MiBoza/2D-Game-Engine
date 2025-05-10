@@ -2,6 +2,7 @@
 #define Aggregate_hpp
 
 #include "TextureManager.hpp"
+#include "Input_Handler.hpp"
 using std::list;
 
 struct Event{
@@ -13,11 +14,11 @@ class Aggregate{
 public:
     Aggregate(const char* title, bool fullscreen = 0);
     ~Aggregate();
-    void Input_Handler();
     void Components();
     void Timing();
 
     bool running = 0;
+    Input_Handler input{running};
 protected:
     Object* AddObject(RigidBody* p_rb = NULL);
     RigidBody* AddRigidBody(Object* object = NULL);
@@ -28,7 +29,7 @@ protected:
     Uint32 runtime = 1;
     Uint32 delta_time;
     Uint32 frame_number = 0;
-    Vector2 window_res = {900, 600};
+    Vector2 window_res{900, 600};
     TextureManager* texture_manager;
 private:
     void Destroy_Object(Object* obj);

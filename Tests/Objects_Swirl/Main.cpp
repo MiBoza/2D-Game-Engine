@@ -27,8 +27,8 @@ Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
 }
 
 void Game::SetUp(){
-    a_circle = texture_manager->Load("assets/Circle.png", texture_res);
-    a_square = texture_manager->Load("assets/Square.png", texture_res);
+    a_circle = texture_manager->Load("Assets/Circle.png", texture_res);
+    a_square = texture_manager->Load("Assets/Square.png", texture_res);
 
     Vector2 size({20, 20});
 
@@ -56,11 +56,11 @@ Vector2 Swirl(float degrees){
 void Game::Update(){
     const static float frequency = 0.12;
 
-    square1->Set_Pos( Swirl(frequency*runtime +   0) );
-    square2->Set_Pos( Swirl(frequency*runtime +  24) );
-    square3->Set_Pos( Swirl(frequency*runtime +  48) );
-    square4->Set_Pos( Swirl(frequency*runtime +  72) );
-    square5->Set_Pos( Swirl(frequency*runtime +  96) );
+    square1->Set_Pos( Swirl(frequency*runtime +  0) );
+    square2->Set_Pos( Swirl(frequency*runtime + 24) );
+    square3->Set_Pos( Swirl(frequency*runtime + 48) );
+    square4->Set_Pos( Swirl(frequency*runtime + 72) );
+    square5->Set_Pos( Swirl(frequency*runtime + 96) );
     circle->Set_Pos( Swirl(frequency*runtime + 120) );     //Lead
 }
 
@@ -69,7 +69,7 @@ int main(){
     game->SetUp();
 
     while(game->running){
-        game->Input_Handler();
+        game->input.Input_Update();
         game->Timing();
         game->Update();
         game->Components();

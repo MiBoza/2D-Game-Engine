@@ -14,6 +14,15 @@ float Ipow(float x, int y){
     return result;
 }
 
+void Vector2::Normalise(){
+    float magnitude = Magnitude(*this);
+    if(magnitude == 0)
+        return;
+
+    x /= magnitude;
+    y /= magnitude;
+}
+
 float Magnitude_Squared(const Vector2& u){
     return Ipow(u.x, 2) + Ipow(u.y, 2);
 }

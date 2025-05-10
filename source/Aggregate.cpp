@@ -35,13 +35,6 @@ Aggregate::Aggregate(const char* title, bool fullscreen){
     texture_manager = new TextureManager(renderer, window_res);
 }
 
-void Aggregate::Input_Handler(){
-    SDL_Event event;
-    SDL_PollEvent(&event);
-    if(event.type == SDL_QUIT)
-        running = 0;
-}
-
 void Aggregate::Destroy_Object(Object* obj){
     if(obj->rb)
         delete obj->rb;

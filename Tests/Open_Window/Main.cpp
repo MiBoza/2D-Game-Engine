@@ -4,7 +4,7 @@ int main(){
     Aggregate* game = new Aggregate("Window Title");
 
     while(game->running){
-        game->Input_Handler();
+        game->input.Input_Update();
         game->Components();
     }
 

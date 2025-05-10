@@ -3,20 +3,20 @@
 
 #include "Aggregate.hpp"
 
-// #define time_limit;
+#define time_limit;
 // #define frame_limit;
 
 void Aggregate::Timing(){
     runtime = SDL_GetTicks();
     ++frame_number;
     #ifdef time_limit
-    if(runtime > 2411){
+    if(runtime > 6411){
         running = 0;
         puts("Dying");
     }
     #endif
     #ifdef frame_limit
-    if(frame_number > 5){
+    if(frame_number > 10){
         running = 0;
         puts("Dying");
     }

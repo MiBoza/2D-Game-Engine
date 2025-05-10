@@ -1,4 +1,5 @@
 #include "TextureManager.hpp"
+#include <filesystem>
 
 void Atlas::Assign_Sprite(Object* obj, int p_row, int p_column){
     obj->flags |= RENDER;
@@ -24,9 +25,14 @@ TextureManager::TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window
     renderer(p_renderer), window_res(p_window_res){}
 
 Atlas* TextureManager::Load(const char* path, const Vector2& resolution, int rows, int columns){
-    SDL_Texture* texture = IMG_LoadTexture(renderer, path);
+    if(!std::filesystem::exists(path)){
+        printf("Warning: Couldn't find texture at %s\n", path);
+        return NULL;
+    }
 
+    SDL_Texture* texture = IMG_LoadTexture(renderer, path);
     Atlas* atlas = new Atlas;
+
     atlas->texture = texture;
     atlas->rows = rows;
     atlas->columns = columns;

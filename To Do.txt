@@ -1,7 +1,5 @@
-Documentation
+Default texture
 Collider Component
-Take User Input
 Save and Load State
 Interactive Scene Editor
-Texture Atlas
 Animation Component

@@ -8,6 +8,7 @@ float Ipow(float x, int y);
 
 struct Vector2{
     float x, y;
+    void Normalise();
 };
 
 float Magnitude_Squared(const Vector2& u);
