@@ -27,10 +27,10 @@ Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
 }
 
 void Game::SetUp(){
-    a_arrow = texture_manager->Load("assets/Arrow.png", {787, 266});
+    a_arrow = texture_manager->Load("Assets/Arrow.png");
     // a_square = texture_manager->Load("assets/Square.png", {787, 266});
 
-    arrow = Init_Object(a_arrow, {90, 30});
+    arrow = Init_Object(a_arrow, {120, 40});
     // square = Init_Object(a_square, {20, 20});
 
     // Set_Framerate(2);
@@ -51,7 +51,7 @@ int main(){
     game->SetUp();
 
     while(game->running){
-        game->Input_Handler();
+        game->input.Input_Update();
         game->Timing();
         game->Update();
         game->Components();

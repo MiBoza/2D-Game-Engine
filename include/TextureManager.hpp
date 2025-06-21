@@ -23,7 +23,7 @@ class TextureManager{
 public:
     const int& total_sprites = sprites;
 
-    Atlas* Load(const char* path, const Vector2& resolution, int rows = 1, int columns = 1);
+    Atlas* Load(const char* path, int rows = 1, int columns = 1);
     friend class Aggregate;
 private:
     TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res);

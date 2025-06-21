@@ -4,11 +4,10 @@ class Game : public Aggregate{
     using Aggregate::Aggregate;
 
     RigidBody* player;
-    float p_speed = 0.15;
     Atlas* circle;
-    Vector2 texture_res = {787, 787};
 
     RigidBody* Init_Rb(Atlas* atlas, const Vector2& size);
+    void Player_Movement();
 public:
     void SetUp();
     void Update();
@@ -25,30 +24,42 @@ RigidBody* Game::Init_Rb(Atlas* atlas, const Vector2& size){
     return rb;
 }
 
+void Game::Player_Movement(){
+    Vector2 v({0, 0});
+    static const float turn_speed = 0.15;
+    static const float p_speed = 0.3;
+    static const float a = 1-turn_speed;
+    static const float b = turn_speed*p_speed;
+
+    if(input.up_k)
+        v += { 0, -1};
+    if(input.down_k)
+        v += { 0,  1};
+    if(input.right_k)
+        v += { 1,  0};
+    if(input.left_k)
+        v += {-1,  0};
+
+    if(Is_Zero(v))
+        player->velocity = v;
+    else{
+        v.Normalise();
+        player->velocity *= a;
+        player->velocity += b*v;
+    }
+}
+
 void Game::SetUp(){
-    circle = texture_manager->Load("Assets/Circle.png", texture_res);
+    circle = texture_manager->Load("Assets/Circle.png");
     Vector2 size({20, 20});
 
     player = Init_Rb(circle, size);
-    // player->velocity = {0.1, 0.02};
+    // player->velocity = {0.1, 0.01};
     Set_Framerate(30);
 }
 
 void Game::Update(){
-    //Player Movement
-    Vector2 p_velocity({0, 0});
-    if(input.up_k)
-        p_velocity.y -= 1;
-    if(input.down_k)
-        p_velocity.y += 1;
-    if(input.right_k)
-        p_velocity.x += 1;
-    if(input.left_k)
-        p_velocity.x -= 1;
-
-    p_velocity.Normalise();
-    p_velocity *= p_speed;
-    player->velocity = p_velocity;
+    Player_Movement();
 }
 
 int main(){

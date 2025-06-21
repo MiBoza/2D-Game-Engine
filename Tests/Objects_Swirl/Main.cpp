@@ -5,7 +5,6 @@ class Game : public Aggregate{
 
     Atlas* a_circle;
     Atlas* a_square;
-    Vector2 texture_res = {787, 787};
 
     Object *circle;
     Object *square1, *square2, *square3, *square4, *square5;
@@ -27,8 +26,8 @@ Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
 }
 
 void Game::SetUp(){
-    a_circle = texture_manager->Load("Assets/Circle.png", texture_res);
-    a_square = texture_manager->Load("Assets/Square.png", texture_res);
+    a_circle = texture_manager->Load("Assets/Circle.png");
+    a_square = texture_manager->Load("Assets/Square.png");
 
     Vector2 size({20, 20});
 

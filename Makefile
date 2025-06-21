@@ -1,41 +1,35 @@
 CC := g++
-purpose := "debug"
 LFLAGS := -lSDL2_image -lSDL2
-Include := -I include -I Project
-source := source
+Include := -I Project -I include
 
-ifeq ($(purpose), "release")
-	CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
-	build := release
-else
-	CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
-	build := debug
-endif
+debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
+release_CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
+Objects = $(target)/Input_Handler.a $(target)/Aggregate.a $(target)/Timing.a $(target)/TextureManager.a $(target)/RigidBody.a $(target)/Object.a $(target)/Vector2.a
 
-auxiliaries := $(build)/Input_Handler.a $(build)/Aggregate.a $(build)/Timing.a $(build)/TextureManager.a $(build)/RigidBody.a $(build)/Object.a $(build)/Vector2.a
 
-all: Vector2 Object RigidBody TextureManager Aggregate Timing Input_Handler Main Join
-run:
-	./$(build).obj
-clean:
-	rm -f $(wildcard *.obj) $(wildcard $(build)/*)
-Join:
-	$(CC) $(CFLAGS) $(build)/Main.a $(auxiliaries) $(LFLAGS) -o $(build).obj
 HotFix:
-	$(CC) $(CFLAGS) $(Include) $(source)/Hot_Fix.cpp $(build)/Vector2.a -o Hot_Fix.obj
-Main:
-	$(CC) $(CFLAGS) $(Include) -c Project/Main.cpp -o $(build)/Main.a
-Input_Handler:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/Input_Handler.cpp -o $(build)/Input_Handler.a
-Aggregate:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/Aggregate.cpp -o $(build)/Aggregate.a
-Timing:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/Timing.cpp -o $(build)/Timing.a
-TextureManager:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/TextureManager.cpp -o $(build)/TextureManager.a
-RigidBody:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/RigidBody.cpp -o $(build)/RigidBody.a
-Object:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/Object.cpp -o $(build)/Object.a
-Vector2:
-	$(CC) $(CFLAGS) $(Include) -c $(source)/Vector2.cpp -o $(build)/Vector2.a
+	$(CC) $(CFLAGS) $(Include) source/Hot_Fix.cpp debug/Vector2.a -o Hot_Fix.obj
+
+# target := debug
+# debug.obj: debug/Main.a $(Objects)
+# 	$(CC) $(debug_CFLAGS) debug/Main.a $(Objects) $(LFLAGS) -o debug.obj
+# run_debug:
+# 	./debug.obj
+# clean_debug:
+# 	rm -f release/Main.a release.obj
+# debug/Main.a: Project/Main.cpp
+# 	$(CC) $(debug_CFLAGS) $(Include) -c Project/Main.cpp -o debug/Main.a
+# $(Objects): debug/%.a: source/%.cpp
+# 	$(CC) $(debug_CFLAGS) $(Include) -c $^ -o $@
+
+target := release
+release.obj: release/Main.a $(Objects)
+	$(CC) $(release_CFLAGS) release/Main.a $(Objects) $(LFLAGS) -o release.obj
+run_release:
+	./release.obj
+clean_release:
+	rm -f release/Main.a release.obj
+release/Main.a: Project/Main.cpp
+	$(CC) $(release_CFLAGS) $(Include) -c Project/Main.cpp -o release/Main.a
+$(Objects): release/%.a: source/%.cpp
+	$(CC) $(release_CFLAGS) $(Include) -c $^ -o $@

@@ -5,7 +5,6 @@ class Game : public Aggregate{
 
     Atlas* a_square;
     Atlas* a_3D;
-    Vector2 texture_res = {787, 787};
     Vector2 size = {200, 200};
 
     Object *square;
@@ -29,8 +28,8 @@ Object* Game::Init_Object(Atlas* atlas, int row, int column){
 }
 
 void Game::SetUp(){
-    a_square = texture_manager->Load("Assets/Square.png", texture_res);
-    a_3D = texture_manager->Load("Assets/3D.png", texture_res, 1, 3);
+    a_square = texture_manager->Load("Assets/Square.png");
+    a_3D = texture_manager->Load("Assets/3D.png", 1, 3);
 
     //Loading a single sprite
     square = AddObject();

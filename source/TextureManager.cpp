@@ -8,6 +8,7 @@ void Atlas::Assign_Sprite(Object* obj, int p_row, int p_column){
         printf("Warning. No image at position %i, %i. File is %i, %i.\n", p_row, p_column, rows, columns);
         puts("Using default.");
         p_row = p_column = 0;
+        obj->flags &= ~RENDER;
     }
 
     Vector2 top_left;
@@ -24,7 +25,7 @@ Atlas::~Atlas(){
 TextureManager::TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res):
     renderer(p_renderer), window_res(p_window_res){}
 
-Atlas* TextureManager::Load(const char* path, const Vector2& resolution, int rows, int columns){
+Atlas* TextureManager::Load(const char* path, int rows, int columns){
     if(!std::filesystem::exists(path)){
         printf("Warning: Couldn't find texture at %s\n", path);
         return NULL;
@@ -36,7 +37,11 @@ Atlas* TextureManager::Load(const char* path, const Vector2& resolution, int row
     atlas->texture = texture;
     atlas->rows = rows;
     atlas->columns = columns;
-    atlas->resolution = resolution;
+    int width, height;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+
+    atlas->resolution.x = width/columns;
+    atlas->resolution.y = height/rows;
 
     textures.push_back(atlas);
 
