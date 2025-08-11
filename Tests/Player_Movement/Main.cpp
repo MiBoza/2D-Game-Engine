@@ -24,6 +24,15 @@ RigidBody* Game::Init_Rb(Atlas* atlas, const Vector2& size){
     return rb;
 }
 
+void Game::SetUp(){
+    circle = texture_manager->Load("Assets/Circle.png");
+    Vector2 size({20, 20});
+
+    player = Init_Rb(circle, size);
+    // player->velocity = {0.1, 0.01};
+    Set_Framerate(30);
+}
+
 void Game::Player_Movement(){
     Vector2 v({0, 0});
     static const float turn_speed = 0.15;
@@ -47,15 +56,6 @@ void Game::Player_Movement(){
         player->velocity *= a;
         player->velocity += b*v;
     }
-}
-
-void Game::SetUp(){
-    circle = texture_manager->Load("Assets/Circle.png");
-    Vector2 size({20, 20});
-
-    player = Init_Rb(circle, size);
-    // player->velocity = {0.1, 0.01};
-    Set_Framerate(30);
 }
 
 void Game::Update(){

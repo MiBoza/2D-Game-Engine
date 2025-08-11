@@ -1,5 +1,8 @@
 #include "Vector2.hpp"
 
+#include <stdio.h>
+#include <cmath>
+
 float Ipow(float x, int y){
     float result = x;
     if(y == 0)
@@ -100,9 +103,19 @@ void operator+=(Vector2& u, const Vector2& v){
     u.y += v.y;
 }
 
+void operator-=(Vector2& u, const Vector2& v){
+    u.x -= v.x;
+    u.y -= v.y;
+}
+
 void operator*=(Vector2& u, float A){
     u.x *= A;
     u.y *= A;
+}
+
+void operator/=(Vector2& u, float A){
+    u.x /= A;
+    u.y /= A;
 }
 
 Vector2 operator*(const Vector2& u, float A){

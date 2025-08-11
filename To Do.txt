@@ -1,5 +1,8 @@
-Default texture
+Text Rendering
+    Specialised AddObject functions that set flags correctly
+    Make Render function apply to image and text correctly
+    Ask Gemini how to blit surface over texture
+Animation Component
 Collider Component
 Save and Load State
 Interactive Scene Editor
-Animation Component

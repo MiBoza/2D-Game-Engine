@@ -38,7 +38,7 @@ void Game::SetUp(){
     square4 = Init_Object(a_square, size);
     square5 = Init_Object(a_square, size);
 
-    Set_Framerate(40);
+    Set_Framerate(28);
 }
 
 Vector2 Swirl(float degrees){

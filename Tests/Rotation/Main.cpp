@@ -4,11 +4,8 @@ class Game : public Aggregate{
     using Aggregate::Aggregate;
 
     Atlas* a_arrow;
-    // Atlas* a_square;
-    // Vector2 texture_res = {787, 787};
 
     Object *arrow;
-    // Object *square;
 
     Object* Init_Object(Atlas* atlas, const Vector2& size);
 public:
@@ -19,7 +16,8 @@ public:
 Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
     Object* obj;
 
-    obj = AddObject();
+    // EXObject enables rotating and flipping
+    obj = AddEXObject();
     atlas->Assign_Sprite(obj);
     obj->Set_Size(size);
 
@@ -28,22 +26,16 @@ Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
 
 void Game::SetUp(){
     a_arrow = texture_manager->Load("Assets/Arrow.png");
-    // a_square = texture_manager->Load("assets/Square.png", {787, 266});
 
     arrow = Init_Object(a_arrow, {120, 40});
-    // square = Init_Object(a_square, {20, 20});
-
-    // Set_Framerate(2);
 }
 
 void Game::Update(){
-    // const static float frequency = 0.12;
+    // const static float frequency =  0.19;
     const static float frequency = -0.24;
 
-    arrow->Rotate(frequency*runtime);
+    arrow->rotation_angle = frequency*runtime;
     // arrow->Flip_Horizontally();
-
-    // circle1->Set_Pos( Swirl(frequency*runtime +   0) );
 }
 
 int main(){

@@ -2,6 +2,7 @@
 #define Aggregate_hpp
 
 #include "TextureManager.hpp"
+#include "RigidBody.hpp"
 #include "Input_Handler.hpp"
 using std::list;
 
@@ -21,6 +22,9 @@ public:
     Input_Handler input{running};
 protected:
     Object* AddObject(RigidBody* p_rb = NULL);
+    Object* AddEXObject(RigidBody* p_rb = NULL);
+    Object* AddTextBox(const char line[] = " ");
+    void Set_Text(Object* obj, const char line[]);
     RigidBody* AddRigidBody(Object* object = NULL);
     void AddEvent(int start, int finish, void (*f)() );
     void Set_Framerate(float framerate);
@@ -33,7 +37,7 @@ protected:
     TextureManager* texture_manager;
 private:
     void Destroy_Object(Object* obj);
-    void Render(Object* obj);
+    void Render(const Object* obj, const Texture_Wrapper& tx_wrap);
 
     float frame_delay = 40;
     list<Object*> objects;

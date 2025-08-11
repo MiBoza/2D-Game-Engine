@@ -1,4 +1,5 @@
 #include "Aggregate.hpp"
+#include <filesystem>
 using std::list;
 
 Aggregate::Aggregate(const char* title, bool fullscreen){
@@ -11,8 +12,19 @@ Aggregate::Aggregate(const char* title, bool fullscreen){
         window_res.y = 1080;
     }
 
-    if(SDL_INIT_EVERYTHING == 0){
-        puts("SDL couldn't initialise");
+    if(SDL_Init(SDL_INIT_VIDEO) < 0){
+        puts("SDL video couldn't initialise.");
+        puts( SDL_GetError() );
+        exit(1);
+    }
+    if(!IMG_Init(IMG_INIT_PNG)){
+        puts("SDL_Image couldn't initialise.");
+        puts( SDL_GetError() );
+        exit(1);
+    }
+    if(TTF_Init() == -1){
+        puts("SDL_ttf couldn't initialise.");
+        puts( SDL_GetError() );
         exit(1);
     }
     int pos_x, pos_y;
@@ -20,12 +32,14 @@ Aggregate::Aggregate(const char* title, bool fullscreen){
     window = SDL_CreateWindow(title, pos_x, pos_y, window_res.x, window_res.y, flags);
     if(!window){
         puts("Window couldn't open correctly");
+        puts( SDL_GetError() );
         exit(1);
     }
 
     renderer = SDL_CreateRenderer(window, -1, 0);
     if(!renderer){
         puts("Renderer didn't initialise");
+        puts( SDL_GetError() );
         exit(1);
     }
 
@@ -56,8 +70,12 @@ void Aggregate::Components(){
             continue;
         }
         ++it;
-        if(object->flags & RENDER)
-            Render(object);
+        if(object->outdated)
+            object->Update_Dest();
+        if(object->flags & IMAGE)
+            Render(object, object->image);
+        if(object->flags & TEXT)
+            Render(object, object->text);
         if(object->rb){
             RigidBody* rb = object->rb;
             rb->Rigid_Update();
@@ -66,17 +84,12 @@ void Aggregate::Components(){
     SDL_RenderPresent(renderer);
 }
 
-void Aggregate::Render(Object* obj){
-    if(obj->outdated)
-        obj->Update_Dest();
-
-    if(obj->flags & COPYEX){
-        SDL_RenderCopyEx(renderer, obj->texture, &obj->source, &obj->destination,
+void Aggregate::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
+    if(obj->flags & COPYEX)
+        SDL_RenderCopyEx(renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination,
             obj->rotation_angle, NULL, obj->flip);
-    }
-    else{
-        SDL_RenderCopy(renderer, obj->texture, &obj->source, &obj->destination);
-    }
+    else
+        SDL_RenderCopy(renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination);
 }
 
 Object* Aggregate::AddObject(RigidBody* p_rb){
@@ -85,6 +98,45 @@ Object* Aggregate::AddObject(RigidBody* p_rb){
     objects.push_back(object);
     return object;
 }
+
+Object* Aggregate::AddEXObject(RigidBody* p_rb){
+    Object* object = AddObject(p_rb);
+    object->flags |= COPYEX;
+    return object;
+}
+
+Object* Aggregate::AddTextBox(const char line[]){
+    Object* object = AddObject();
+    object->flags |= TEXT;
+    Set_Text(object, line);
+
+    return object;
+}
+
+void Aggregate::Set_Text(Object* obj, const char line[]){
+    if(!(obj->flags & TEXT)){
+        puts("Warning. Trying to set text to object without TEXT flag");
+        return;
+    }
+    Texture_Wrapper& text = obj->text;
+    if(text.texture)
+        SDL_DestroyTexture(text.texture);
+
+    obj->colour = {0x00, 0x00, 0x00, 0xFF};
+    text.source.x = 0;
+    text.source.y = 0;
+    SDL_Surface* Surface = TTF_RenderText_Blended(texture_manager->font, line, obj->colour);
+    text.texture = SDL_CreateTextureFromSurface(renderer, Surface);
+    if(!text.texture){
+        puts("Error. Text failed to render");
+        puts( SDL_GetError() );
+        exit(1);
+    }
+    obj->outdated = 1;
+    SDL_QueryTexture(text.texture, NULL, NULL, &text.source.w, &text.source.h);
+    SDL_FreeSurface(Surface);
+}
+
 
 RigidBody* Aggregate::AddRigidBody(Object* object){
     RigidBody* rb = new RigidBody(delta_time, object);
@@ -109,7 +161,7 @@ Aggregate::~Aggregate(){
         relaxation = runtime;
 
     printf("Game ended after %i ms.\n", runtime);
-    printf("Relaxed for %i ms (%i", relaxation, 100*relaxation/runtime);
+    printf("Relaxed for %i ms (%.2f", relaxation, 100.0*relaxation/runtime);
     puts("%).");
     SDL_Quit();
 }

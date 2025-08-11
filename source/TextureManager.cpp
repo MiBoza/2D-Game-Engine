@@ -2,20 +2,20 @@
 #include <filesystem>
 
 void Atlas::Assign_Sprite(Object* obj, int p_row, int p_column){
-    obj->flags |= RENDER;
+    obj->flags |= IMAGE;
 
     if(p_row >= rows || p_column >= columns){
         printf("Warning. No image at position %i, %i. File is %i, %i.\n", p_row, p_column, rows, columns);
         puts("Using default.");
         p_row = p_column = 0;
-        obj->flags &= ~RENDER;
     }
 
     Vector2 top_left;
+    Texture_Wrapper& image = obj->image;
     top_left.x = p_column*resolution.x;
     top_left.y = p_row*resolution.y;
-    obj->texture = texture;
-    obj->source = {top_left.x, top_left.y, resolution.x, resolution.y};
+    image.texture = texture;
+    image.source = {top_left.x, top_left.y, resolution.x, resolution.y};
 }
 
 Atlas::~Atlas(){
@@ -23,7 +23,14 @@ Atlas::~Atlas(){
 }
 
 TextureManager::TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res):
-    renderer(p_renderer), window_res(p_window_res){}
+    renderer(p_renderer), window_res(p_window_res){
+    const char font_path[] = "Assets/font.ttf";
+    font = TTF_OpenFont(font_path, 52);
+    if(!font){
+        printf("Error. Failed to open font at %s\n", font_path);
+        exit(1);
+    }
+}
 
 Atlas* TextureManager::Load(const char* path, int rows, int columns){
     if(!std::filesystem::exists(path)){
@@ -31,7 +38,15 @@ Atlas* TextureManager::Load(const char* path, int rows, int columns){
         return NULL;
     }
 
+    if(!renderer){
+        printf("renderer = %i\n", renderer);
+        exit(1);
+    }
     SDL_Texture* texture = IMG_LoadTexture(renderer, path);
+    if(!texture){
+        puts(SDL_GetError());
+        exit(1);
+    }
     Atlas* atlas = new Atlas;
 
     atlas->texture = texture;
@@ -49,6 +64,8 @@ Atlas* TextureManager::Load(const char* path, int rows, int columns){
 }
 
 TextureManager::~TextureManager(){
+    if(font)
+        TTF_CloseFont(font);
     for(Atlas* atlas: textures){
         delete atlas;
     }

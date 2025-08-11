@@ -1,9 +1,6 @@
 #ifndef Vector2_hpp
 #define Vector2_hpp
 
-#include <stdio.h>
-#include <cmath>
-
 float Ipow(float x, int y);
 
 struct Vector2{
@@ -25,7 +22,9 @@ Vector2 operator/(const Vector2& u, float A);
 bool Not_Zero(const Vector2& u);
 bool Is_Zero(const Vector2& u);
 void operator+=(Vector2& u, const Vector2& v);
+void operator-=(Vector2& u, const Vector2& v);
 void operator*=(Vector2& u, float A);
+void operator/=(Vector2& u, float A);
 Vector2 operator*(const Vector2& u, float A);
 Vector2 operator*(float A, const Vector2& u);
 void Print_Vector2(const char* string, const Vector2& u);

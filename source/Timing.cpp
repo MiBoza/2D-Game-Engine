@@ -10,7 +10,7 @@ void Aggregate::Timing(){
     runtime = SDL_GetTicks();
     ++frame_number;
     #ifdef time_limit
-    if(runtime > 6411){
+    if(runtime > 10411){
         running = 0;
         puts("Dying");
     }

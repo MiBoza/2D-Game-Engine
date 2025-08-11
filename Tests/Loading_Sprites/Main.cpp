@@ -29,7 +29,7 @@ Object* Game::Init_Object(Atlas* atlas, int row, int column){
 
 void Game::SetUp(){
     a_square = texture_manager->Load("Assets/Square.png");
-    a_3D = texture_manager->Load("Assets/3D.png", 1, 3);
+    a_3D = texture_manager->Load("Assets/Atlas.png", 2, 5);
 
     //Loading a single sprite
     square = AddObject();

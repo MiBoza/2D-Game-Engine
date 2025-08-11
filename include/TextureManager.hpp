@@ -2,7 +2,7 @@
 #define TextureManager_hpp
 
 #include <vector>
-#include "RigidBody.hpp"
+#include "Object.hpp"
 
 #define CAPACITY 0x10000
 
@@ -24,14 +24,14 @@ public:
     const int& total_sprites = sprites;
 
     Atlas* Load(const char* path, int rows = 1, int columns = 1);
-    friend class Aggregate;
-private:
     TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res);
+    ~TextureManager();
+    TTF_Font* font;
+private:
     int sprites = 0;
     std::vector<Atlas*> textures;
     Vector2 window_res;
     SDL_Renderer* renderer;
-    ~TextureManager();
 };
 
 #endif // TextureManager_hpp
