@@ -15,15 +15,22 @@ struct Texture_Wrapper{
     SDL_Rect source;
 
     Texture_Wrapper();
-    ~Texture_Wrapper();
+};
+
+class Behaviour{
+public:
+	virtual void execute() = 0;
+	virtual ~Behaviour() = default;
 };
 
 enum ObjectFlags{
-    EMPTY   = 0x00,
-    DELETED = 0x01,
-    IMAGE   = 0x02,
-    TEXT    = 0x04,
-    COPYEX  = 0x08
+    EMPTY     = 0x00,
+    OUTDATED  = 0x01,
+    DELETED   = 0x02,
+    IMAGE     = 0x04,
+    TEXT      = 0x08,
+    COPYEX    = 0x10,
+    BEHAVIOUR = 0x20
 };
 
 class RigidBody;
@@ -39,24 +46,25 @@ public:
     void Set_Pos(const Vector2& p_pos);
     void Set_Pos(Vector2&& p_pos);
     void Set_Size(const Vector2& p_size);
+    void Set_Behaviour(Behaviour* behaviour);
     void Flip_Horizontally();
     void Flip_Vertically();
     Vector2 Get_Pos();
     Vector2 Get_Size();
     void Destroy();
-    friend class Aggregate;
-    friend class Atlas;
-    friend class TextureManager;
 private:
     Texture_Wrapper image;
     Texture_Wrapper text;
     SDL_Color colour;
-    bool outdated = 1;
     Vector2 pos;
     Vector2 size;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
+    Behaviour* behaviour = NULL;
 
     void Update_Dest();
+    friend class Aggregate;
+    friend class Atlas;
+    friend class TextureManager;
 };
 
 #endif // Object_hpp

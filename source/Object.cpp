@@ -7,10 +7,6 @@ void Print_Rect(const char* string, const SDL_Rect& rect){
 Texture_Wrapper::Texture_Wrapper():
     texture(NULL){}
 
-Texture_Wrapper::~Texture_Wrapper(){
-    SDL_DestroyTexture(texture);
-}
-
 Object::Object(RigidBody* p_rb):
     rb(p_rb), size({60, 60}){
     text.texture = NULL;
@@ -18,17 +14,22 @@ Object::Object(RigidBody* p_rb):
 
 void Object::Set_Pos(const Vector2& p_pos){
     pos = p_pos;
-    outdated = 1;
+    flags |= OUTDATED;
 }
 
 void Object::Set_Pos(Vector2&& p_pos){
     pos = p_pos;
-    outdated = 1;
+    flags |= OUTDATED;
 }
 
 void Object::Set_Size(const Vector2& p_size){
     size = p_size;
-    outdated = 1;
+    flags |= OUTDATED;
+}
+
+void Object::Set_Behaviour(Behaviour* p_behaviour){
+    flags |= BEHAVIOUR;
+    behaviour = p_behaviour;
 }
 
 void Object::Flip_Horizontally(){
@@ -63,9 +64,11 @@ void Object::Update_Dest(){
         Vector2 corner = pos - tx_size/2;
         text.destination = {corner.x, corner.y, tx_size.x, tx_size.y};
     }
-    outdated = 0;
+    flags &= ~OUTDATED;
 }
 
 void Object::Destroy(){
     flags |= DELETED;
+    if(flags & BEHAVIOUR)
+        delete behaviour;
 }

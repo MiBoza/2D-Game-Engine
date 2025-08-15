@@ -2,12 +2,11 @@ CC := g++
 LFLAGS := -lSDL2_image -lSDL2_ttf -lSDL2
 Include := -I Project -I include
 
-debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g
-# debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
+debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
 release_CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
 
 
-source_objects := Aggregate.a Timing.a TextureManager.a RigidBody.a Object.a Vector2.a
+source_objects := Aggregate.a Aggregate2.a TextureManager.a RigidBody.a Object.a Vector2.a
 project_objects := Input_Handler.a Main.a
 
 debug_project := $(addprefix debug/,$(project_objects))
@@ -16,7 +15,7 @@ debug_source := $(addprefix debug/,$(source_objects))
 release_source := $(addprefix release/,$(source_objects))
 
 Hot_Fix.obj: source/Hot_Fix.cpp
-	$(CC) $(debug_CFLAGS) $(Include) $^ $(LFLAGS) -o $@
+	$(CC) $(debug_CFLAGS) $^ $(LFLAGS) -o $@
 clear:
 	clear
 clean:
