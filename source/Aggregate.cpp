@@ -100,14 +100,14 @@ void Aggregate::Components(){
     }
     SDL_RenderPresent(renderer);
 }
-#define time_limit;
+// #define time_limit;
 // #define frame_limit;
 
 void Aggregate::Timing(){
     runtime = SDL_GetTicks();
     ++frame_number;
     #ifdef time_limit
-    if(runtime > 4700){
+    if(runtime > 3000){
         running = 0;
         puts("Dying");
     }

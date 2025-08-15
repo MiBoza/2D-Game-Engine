@@ -43,7 +43,7 @@ Object* Game::Init_Square(int x){
     square->Set_Pos(pos);
     square->Set_Size({50, 50});
     atlas->Assign_Sprite(square, 1, 1);
-    Square_Bh* square_bh = new Square_Bh(square, 0.15, delta_time);
+    Square_Bh* square_bh = new Square_Bh(square, 0.25, delta_time);
     square->Set_Behaviour(square_bh);
 
     return square;

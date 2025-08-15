@@ -1,4 +1,9 @@
-*.obj
-source/Hot_Fix.cpp
-Notes.txt
-Videos
+*
+!Assets
+!debug
+!Documentation.pdf
+!include
+!Makefile
+!Project
+!Tests
+!To Do.txt

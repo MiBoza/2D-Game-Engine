@@ -36,7 +36,7 @@ void Game::SetUp(){
 void Game::Player_Movement(){
     Vector2 v({0, 0});
     static const float turn_speed = 0.15;
-    static const float p_speed = 0.3;
+    static const float p_speed = 0.5;
     static const float a = 1-turn_speed;
     static const float b = turn_speed*p_speed;
 
