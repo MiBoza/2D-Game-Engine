@@ -51,15 +51,16 @@ Aggregate::Aggregate(const char* title, bool fullscreen){
 
 Aggregate::~Aggregate(){
     delete texture_manager;
-    texture_manager = NULL;
+    texture_manager = nullptr;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     for(Object* obj : objects){
-        Destroy_Object(obj);
+        delete obj;
     }
-    for(Event* e : events){
-        delete e;
-    }
+    for(Event& event : events)
+        delete event.behaviour;
+    for(SDL_Thread* thread : threads)
+        SDL_WaitThread(thread, nullptr);
 
     if(relaxation > runtime)
         relaxation = runtime;
@@ -80,7 +81,7 @@ void Aggregate::Components(){
         Object* object = *it;
 
         if(object->flags & DELETED){
-            Destroy_Object(object);
+            delete object;
             it = objects.erase(it);
             continue;
         }
@@ -106,27 +107,14 @@ void Aggregate::Components(){
 void Aggregate::Timing(){
     runtime = SDL_GetTicks();
     ++frame_number;
-    #ifdef time_limit
-    if(runtime > 3000){
-        running = 0;
-        puts("Dying");
-    }
-    #endif
-    #ifdef frame_limit
-    if(frame_number > 14){
-        running = 0;
-        puts("Dying");
-    }
-    #endif
-
-    static Uint32 last_frame = runtime - frame_delay;
-    static int to_wait = 0;
 
     delta_time = runtime - last_frame;
     to_wait += frame_delay - delta_time;
     relaxation += to_wait;
     if(to_wait > 0)
         SDL_Delay(to_wait);
+    else
+        to_wait = 0;
 
     last_frame = runtime;
 }

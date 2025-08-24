@@ -6,6 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "Vector2.hpp"
 #include <list>
+using std::list;
 
 void Print_Rect(const char* string, const SDL_Rect& rect);
 
@@ -51,6 +52,7 @@ public:
     void Flip_Vertically();
     Vector2 Get_Pos();
     Vector2 Get_Size();
+    void Update_Dest();
     void Destroy();
 private:
     Texture_Wrapper image;
@@ -61,9 +63,11 @@ private:
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     Behaviour* behaviour = NULL;
 
-    void Update_Dest();
-    friend class Aggregate;
+    ~Object();
+
     friend class Atlas;
+    friend class Aggregate;
+    friend class RigidBody;
     friend class TextureManager;
 };
 

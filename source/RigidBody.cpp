@@ -16,9 +16,12 @@ void RigidBody::Rigid_Update(){
 }
 
 void RigidBody::Collide(const Line& line){
+    Vector2& p1 = object->pos;
+    if(line.h*p1.y < line.k*p1.x + line.l)
+        return;
+
     const Vector2& a = acceleration;
     Vector2& v1 = velocity;
-    Vector2 p1 = Get_Pos();
     const float& h = line.h;
     const float& k = line.k;
     const float& l = line.l;
@@ -61,9 +64,6 @@ void RigidBody::Collide(const Line& line){
     //Calculating position after collision
     p1 = 0.5*a*dt*dt + v0*dt + p0;
     v1 = v0 + a*dt; //Update velocity
-
-    //Write results;
-    Set_Pos(p1);
 }
 
 void RigidBody::Set_Pos(const Vector2& p_pos){

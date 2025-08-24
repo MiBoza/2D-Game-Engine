@@ -1,7 +1,6 @@
 #ifndef TextureManager_hpp
 #define TextureManager_hpp
 
-#include <vector>
 #include "Object.hpp"
 
 #define CAPACITY 0x10000
@@ -13,7 +12,8 @@ public:
     Vector2 resolution;
     bool deleted = 0;
 
-    void Assign_Sprite(Object* obj, int row = 0, int column = 0);
+    void Assign_Sprite(Object* obj, int row, int column);
+    void Assign_Sprite(Object* obj, int pos = 0);
     friend class TextureManager;
 private:
     ~Atlas();   //User should assign delete instead
@@ -29,7 +29,7 @@ public:
     TTF_Font* font;
 private:
     int sprites = 0;
-    std::vector<Atlas*> textures;
+    list<Atlas*> textures;
     Vector2 window_res;
     SDL_Renderer* renderer;
 };

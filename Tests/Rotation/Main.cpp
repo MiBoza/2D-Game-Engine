@@ -32,7 +32,7 @@ void Game::SetUp(){
 
 void Game::Update(){
     // const static float frequency =  0.19;
-    const static float frequency = -0.24;
+    const static float frequency = 0.24;
 
     arrow->rotation_angle = frequency*runtime;
     // arrow->Flip_Horizontally();

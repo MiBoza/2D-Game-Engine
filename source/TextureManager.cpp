@@ -18,13 +18,19 @@ void Atlas::Assign_Sprite(Object* obj, int p_row, int p_column){
     image.source = {top_left.x, top_left.y, resolution.x, resolution.y};
 }
 
+void Atlas::Assign_Sprite(Object* obj, int pos){
+    int row = floor(pos/columns);
+    int column = pos - row*columns;
+    Assign_Sprite(obj, row, column);
+}
+
 Atlas::~Atlas(){
     SDL_DestroyTexture(texture);
 }
 
 TextureManager::TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res):
     renderer(p_renderer), window_res(p_window_res){
-    const char font_path[] = "Assets/font.ttf";
+    const char font_path[] = "Include/font.ttf";
     font = TTF_OpenFont(font_path, 52);
     if(!font){
         printf("Error. Failed to open font at %s\n", font_path);

@@ -69,6 +69,11 @@ void Object::Update_Dest(){
 
 void Object::Destroy(){
     flags |= DELETED;
-    if(flags & BEHAVIOUR)
+}
+
+Object::~Object(){
+    if(rb)
+        delete rb;
+    if(behaviour)
         delete behaviour;
 }

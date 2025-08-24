@@ -3,40 +3,37 @@
 class Game : public Aggregate{
     using Aggregate::Aggregate;
 
-    Atlas* a_circle;
-    Atlas* a_square;
+    Atlas* atlas;
 
     Object *circle;
     Object *square1, *square2, *square3, *square4, *square5;
 
-    Object* Init_Object(Atlas* atlas, const Vector2& size);
+    const Vector2& size = {20, 20};
+    Object* Init_Object(int pos);
 public:
     void SetUp();
     void Update();
 };
 
-Object* Game::Init_Object(Atlas* atlas, const Vector2& size){
+Object* Game::Init_Object(int pos){
     Object* obj;
 
     obj = AddObject();
-    atlas->Assign_Sprite(obj);
+    atlas->Assign_Sprite(obj, pos);
     obj->Set_Size(size);
 
     return obj;
 }
 
 void Game::SetUp(){
-    a_circle = texture_manager->Load("Assets/Circle.png");
-    a_square = texture_manager->Load("Assets/Square.png");
+    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
 
-    Vector2 size({20, 20});
-
-    circle = Init_Object(a_circle, size);
-    square1 = Init_Object(a_square, size);
-    square2 = Init_Object(a_square, size);
-    square3 = Init_Object(a_square, size);
-    square4 = Init_Object(a_square, size);
-    square5 = Init_Object(a_square, size);
+    circle  = Init_Object(5);
+    square1 = Init_Object(6);
+    square2 = Init_Object(6);
+    square3 = Init_Object(6);
+    square4 = Init_Object(6);
+    square5 = Init_Object(6);
 
     Set_Framerate(28);
 }
