@@ -15,14 +15,16 @@ public:
     Vector2 velocity = {0, 0};
     Vector2 acceleration = {0, 0};
 
-    RigidBody(const Uint32& p_delta_time, Object* p_object);
     void Rigid_Update();
-    void Collide(const Line& line); //Calculates collision with a line
+    void Collide(const Line& line);
     void Set_Pos(const Vector2& p_pos);
     void Set_Size(const Vector2& p_size);
 
     Vector2 Get_Pos();
     Vector2 Get_Size();
+private:
+    RigidBody(const Uint32& p_delta_time);
+    friend class Aggregate;
 };
 
 #endif //RigidBody_hpp

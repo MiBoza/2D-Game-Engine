@@ -31,7 +31,8 @@ enum ObjectFlags{
     IMAGE     = 0x04,
     TEXT      = 0x08,
     COPYEX    = 0x10,
-    BEHAVIOUR = 0x20
+    BEHAVIOUR = 0x20,
+    RIGIDBODY = 0x40
 };
 
 class RigidBody;

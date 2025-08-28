@@ -1,4 +1,5 @@
 #include "Aggregate.hpp"
+#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -11,6 +12,7 @@ class Game : public Aggregate{
     const Vector2& size = {20, 20};
     Object* Init_Object(int pos);
 public:
+    Input_Handler input{running};
     void SetUp();
     void Update();
 };

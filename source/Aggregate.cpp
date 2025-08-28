@@ -94,7 +94,7 @@ void Aggregate::Components(){
             Render(object, object->text);
         if(object->flags & BEHAVIOUR)
             object->behaviour->execute();
-        if(object->rb){
+        if(object->flags & RIGIDBODY){
             RigidBody* rb = object->rb;
             rb->Rigid_Update();
         }

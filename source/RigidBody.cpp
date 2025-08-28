@@ -1,7 +1,7 @@
 #include "RigidBody.hpp"
 
-RigidBody::RigidBody(const Uint32& p_delta_time, Object* p_object):
-    object(p_object), delta_time(p_delta_time){
+RigidBody::RigidBody(const Uint32& p_delta_time):
+    delta_time(p_delta_time){
 }
 
 void RigidBody::Rigid_Update(){

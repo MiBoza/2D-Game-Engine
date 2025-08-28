@@ -1,4 +1,5 @@
 #include "Aggregate.hpp"
+#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -14,6 +15,7 @@ class Game : public Aggregate{
 
     Object* Init_Object(Atlas* atlas, int row, int column);
 public:
+    Input_Handler input{running};
     void SetUp();
 };
 

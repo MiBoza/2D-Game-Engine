@@ -1,4 +1,5 @@
 #include "Aggregate.hpp"
+#include "Input_Handler.hpp"
 #include "Basics.h"
 
 class Game : public Aggregate{
@@ -10,6 +11,7 @@ class Game : public Aggregate{
     int count = 1;
     int last_change;
 public:
+    Input_Handler input{running};
     void SetUp();
     void Update();
 };

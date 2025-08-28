@@ -1,10 +1,12 @@
 #include "Aggregate.hpp"
+#include "Input_Handler.hpp"
 
 int main(){
     Aggregate* game = new Aggregate("Window Title");
-    
+    Input_Handler input(game->running);
+
     while(game->running){
-        game->input.Input_Update();
+        input.Input_Update();
         game->Components();
     }
 

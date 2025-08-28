@@ -27,8 +27,8 @@ debug.obj: $(debug_project) $(debug_source)
 run_debug: debug.obj
 	./debug.obj
 Project/Input_Handler.cpp:
-	ln -s `realpath Include/Default_Input.hpp` Project/Input_Handler.hpp
-	ln -s `realpath source/Default_Input.cpp` Project/Input_Handler.cpp
+	ln -s `realpath Include/Input_Handler.hpp` Project/Input_Handler.hpp
+	ln -s `realpath source/Input_Handler.cpp` Project/Input_Handler.cpp
 $(debug_project): debug/%.o: Project/%.cpp
 	$(CC) $(debug_CFLAGS) $(Include) -c $^ -o $@
 $(debug_source): debug/%.o: source/%.cpp

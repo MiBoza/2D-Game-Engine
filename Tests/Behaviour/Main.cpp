@@ -1,4 +1,5 @@
 #include "Aggregate.hpp"
+#include "Input_Handler.hpp"
 
 const int num_squares = 5;
 
@@ -7,8 +8,9 @@ class Game : public Aggregate{
 
     Atlas* atlas;
     float square_speed = 0.1;
-public:
     Object* Init_Square(int x);
+public:
+    Input_Handler input{running};
     void SetUp();
     void Update();
 };

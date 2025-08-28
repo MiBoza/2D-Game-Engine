@@ -3,7 +3,6 @@
 
 #include "TextureManager.hpp"
 #include "RigidBody.hpp"
-#include "Input_Handler.hpp"
 
 class Event{
 public:
@@ -20,10 +19,9 @@ public:
     void Timing();
 
     bool running = 0;
-    Input_Handler input{running};
 protected:
-    Object* AddObject(RigidBody* p_rb = NULL);
-    Object* AddEXObject(RigidBody* p_rb = NULL);
+    Object* AddObject(RigidBody* p_rb = nullptr);
+    Object* AddEXObject(RigidBody* p_rb = nullptr);
     Object* AddTextBox(const char line[] = " ");
     void Set_Text(Object* obj, const char line[]);
     RigidBody* AddRigidBody(Object* object = nullptr);

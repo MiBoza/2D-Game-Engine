@@ -1,5 +1,5 @@
 #include "Aggregate.hpp"
-// #include <stdio.h>
+#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -9,6 +9,7 @@ class Game : public Aggregate{
     Atlas* atlas;
     RigidBody* square;
 public:
+    Input_Handler input{running};
     void SetUp();
     void Update();
 };

@@ -1,4 +1,5 @@
 #include "Aggregate.hpp"
+#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -9,6 +10,7 @@ class Game : public Aggregate{
     RigidBody* Init_Rb(Atlas* atlas, const Vector2& size);
     void Player_Movement();
 public:
+    Input_Handler input{running};
     void SetUp();
     void Update();
 };

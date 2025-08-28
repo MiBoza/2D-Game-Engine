@@ -36,9 +36,11 @@ void Aggregate::Set_Text(Object* obj, const char line[]){
 }
 
 RigidBody* Aggregate::AddRigidBody(Object* object){
-    RigidBody* rb = new RigidBody(delta_time, object);
-    if(!rb->object)
-        rb->object = AddObject(rb);
+    RigidBody* rb = new RigidBody(delta_time);
+    if(!object)
+        object = AddObject(rb);
+    rb->object = object;
+    object->flags |= RIGIDBODY;
     return rb;
 }
 
