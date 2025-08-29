@@ -35,11 +35,11 @@ $(debug_source): debug/%.o: source/%.cpp
 	$(CC) $(debug_CFLAGS) $(Include) -c $^ -o $@
 
 
-release.obj: $(release_project) release/Silly_Release.a
+release.obj: $(release_project) Silly_Release.a
 	$(CC) $(release_CFLAGS) $^ $(LFLAGS) -o $@
-release/Silly_Release.a: $(release_source)
+Silly_Release.a: $(release_source)
 	ar -rcs $@ $^
-	ar -rcs debug/Silly_Debug.a $(debug_source)
+	ar -rcs Silly_Debug.a $(debug_source)
 run_release: release.obj
 	./release.obj
 $(release_project): release/%.o: Project/%.cpp

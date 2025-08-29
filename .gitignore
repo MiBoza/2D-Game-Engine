@@ -1,9 +1,11 @@
-*
-!Assets
+/*
+!.gitignore
+!Assets/
 !debug
 !Documentation.pdf
-!Include
+!Include/
 !Makefile
 !Project
-!Tests
+!Tests/
+!source/
 !To Do.txt
