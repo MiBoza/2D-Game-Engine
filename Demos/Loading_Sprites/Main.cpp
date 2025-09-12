@@ -1,5 +1,4 @@
 #include "Aggregate.hpp"
-#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -15,8 +14,8 @@ class Game : public Aggregate{
 
     Object* Init_Object(Atlas* atlas, int row, int column);
 public:
-    Input_Handler input{running};
     void SetUp();
+    void Update();
 };
 
 Object* Game::Init_Object(Atlas* atlas, int row, int column){
@@ -30,6 +29,7 @@ Object* Game::Init_Object(Atlas* atlas, int row, int column){
 }
 
 void Game::SetUp(){
+    input = new Default_Input(state);
     a_square = texture_manager->Load("Assets/Square.png");
     a_3D = texture_manager->Load("Assets/Atlas.png", 2, 5);
 
@@ -49,12 +49,14 @@ void Game::SetUp(){
     cone->Set_Pos({277, 470});
 }
 
+void Game::Update(){}
+
 int main(){
     Game* game = new Game("Load Sprites");
     game->SetUp();
 
-    while(game->running){
-        game->input.Input_Update();
+    while(game->state){
+        game->input->Input_Update();
         game->Components();
     }
 

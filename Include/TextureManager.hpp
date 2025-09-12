@@ -3,8 +3,6 @@
 
 #include "Object.hpp"
 
-#define CAPACITY 0x10000
-
 class Atlas{
 public:
     SDL_Texture* texture;

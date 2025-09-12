@@ -1,11 +1,11 @@
 #include "Aggregate.hpp"
-#include <filesystem>
+// #include <filesystem>
 using std::list;
 
-Aggregate::Aggregate(const char* title, bool fullscreen){
+Window_Data::Window_Data(char* p_title, int p_state, int width, int height, bool p_fullscreen):
+    title(p_title), window_res({width, height}),
+    state(p_state), fullscreen(p_fullscreen){
     int flags = 0;
-    Vector2& window_res = Aggregate::window_res;
-
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
         window_res.x = 1920;
@@ -43,17 +43,23 @@ Aggregate::Aggregate(const char* title, bool fullscreen){
         exit(1);
     }
 
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //Red, Green, Blue, Something
-    running = 1;
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); //Red, Green, Blue, Alpha
+}
 
-    texture_manager = new TextureManager(renderer, window_res);
+Window_Data::~Window_Data(){
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
+}
+
+Aggregate::Aggregate(Window_Data& p_window_data):
+    window_data(p_window_data), state(p_window_data.state){
+    texture_manager = new TextureManager(window_data.renderer, window_res);
 }
 
 Aggregate::~Aggregate(){
     delete texture_manager;
     texture_manager = nullptr;
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
     for(Object* obj : objects){
         delete obj;
     }
@@ -61,21 +67,21 @@ Aggregate::~Aggregate(){
         delete event.behaviour;
     for(SDL_Thread* thread : threads)
         SDL_WaitThread(thread, nullptr);
-
+    if(input)
+        delete input;
     if(relaxation > runtime)
         relaxation = runtime;
 
-    printf("Game ended after %i ms.\n", runtime);
+    printf("Silly scene ended after %i ms.\n", runtime);
     printf("Relaxed for %i ms (%.2f", relaxation, 100.0*relaxation/runtime);
-    puts("%).");
-    SDL_Quit();
+    puts("%).\n");
 }
 
 void Aggregate::Components(){
     //Looks through the list of objects and
     //Renders or calculates physics as required
 
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(window_data.renderer);
     typename std::list<Object*>::iterator it = objects.begin();
     for(; it != objects.end();){
         Object* object = *it;
@@ -99,10 +105,8 @@ void Aggregate::Components(){
             rb->Rigid_Update();
         }
     }
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(window_data.renderer);
 }
-// #define time_limit;
-// #define frame_limit;
 
 void Aggregate::Timing(){
     runtime = SDL_GetTicks();

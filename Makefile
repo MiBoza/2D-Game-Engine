@@ -7,7 +7,7 @@ debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
 release_CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
 
 source_objects := Aggregate.o Aggregate2.o TextureManager.o RigidBody.o Object.o Vector2.o
-project_objects := Input_Handler.o Main.o
+project_objects := Main.o Counter.o Swirl.o
 
 debug_project := $(addprefix debug/,$(project_objects))
 release_project := $(addprefix release/,$(project_objects))
@@ -26,9 +26,6 @@ debug.obj: $(debug_project) $(debug_source)
 	$(CC) $(debug_CFLAGS) $^ $(LFLAGS) -o $@
 run_debug: debug.obj
 	./debug.obj
-Project/Input_Handler.cpp:
-	ln -s `realpath Include/Input_Handler.hpp` Project/Input_Handler.hpp
-	ln -s `realpath source/Input_Handler.cpp` Project/Input_Handler.cpp
 $(debug_project): debug/%.o: Project/%.cpp
 	$(CC) $(debug_CFLAGS) $(Include) -c $^ -o $@
 $(debug_source): debug/%.o: source/%.cpp

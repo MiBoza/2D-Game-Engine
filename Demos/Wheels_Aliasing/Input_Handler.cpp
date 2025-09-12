@@ -1,8 +1,5 @@
 #include "Input_Handler.hpp"
 
-Input_Handler::Input_Handler(bool& p_running):
-	running(p_running){}
-
 void KeyDown(short& key){
 	key <<= 1;
 	key |= CURRENT;
@@ -17,7 +14,7 @@ void Input_Handler::Input_Update(){
 	down_k &= CURRENT;
 
 	if(event.type == SDL_QUIT)
-		running = 0;
+		state = 0;
 	if(event.type == SDL_KEYDOWN){
 		switch(event.key.keysym.sym){
 		case SDLK_UP:

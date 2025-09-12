@@ -1,6 +1,3 @@
-#ifndef Timing_hpp
-#define Timing_hpp
-
 #include "Aggregate.hpp"
 
 Object* Aggregate::AddTextBox(const char line[]){
@@ -24,7 +21,7 @@ void Aggregate::Set_Text(Object* obj, const char line[]){
     text.source.x = 0;
     text.source.y = 0;
     SDL_Surface* Surface = TTF_RenderText_Blended(texture_manager->font, line, obj->colour);
-    text.texture = SDL_CreateTextureFromSurface(renderer, Surface);
+    text.texture = SDL_CreateTextureFromSurface(window_data.renderer, Surface);
     if(!text.texture){
         puts("Error. Text failed to render");
         puts( SDL_GetError() );
@@ -33,6 +30,11 @@ void Aggregate::Set_Text(Object* obj, const char line[]){
     obj->flags |= OUTDATED;
     SDL_QueryTexture(text.texture, NULL, NULL, &text.source.w, &text.source.h);
     SDL_FreeSurface(Surface);
+}
+
+void Aggregate::Set_Text(Object* obj, const std::string line){
+    const char* c_string = line.c_str();
+    Set_Text(obj, c_string);
 }
 
 RigidBody* Aggregate::AddRigidBody(Object* object){
@@ -89,43 +91,51 @@ void Aggregate::Event_Handler(){
 
 struct County{
     int miliseconds;
-    bool* running;
+    short* state;
 };
 
 int Countdown(void* ptr){
     County* data = reinterpret_cast<County*>(ptr);
     SDL_Delay(data->miliseconds);
-    *data->running = 0;
+    *data->state = 0;
     delete data;
     return 0;
 }
 
 void Aggregate::Timelimit_Thread(int miliseconds){
-    County* data = new County(miliseconds, &running);
+    County* data = new County(miliseconds, &state);
     SDL_Thread* thread = SDL_CreateThread(Countdown, "Countdown", data);
     threads.push_back(thread);
 }
 
 void Aggregate::Timelimit_Event(int miliseconds){
-    Finish* finish = new Finish(running);
+    Finish* finish = new Finish(state);
     Event event({finish, miliseconds});
     AddEvent( std::move(event) );
 }
 
 void Aggregate::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
     if(obj->flags & COPYEX)
-        SDL_RenderCopyEx(renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination,
+        SDL_RenderCopyEx(window_data.renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination,
             obj->rotation_angle, NULL, obj->flip);
     else{
-        SDL_RenderCopy(renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination);
+        SDL_RenderCopy(window_data.renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination);
     }
 }
 
-Finish::Finish(bool& p_running):
-    running(p_running){}
+Finish::Finish(short& p_state):
+    state(p_state){}
 
 void Finish::execute(){
-    running = 0;
+    state = 0;
 }
 
-#endif //Timing_hpp
+Input_Base::Input_Base(short& p_state):
+    state(p_state){}
+
+void Default_Input::Input_Update(){
+	SDL_PollEvent(&event);
+
+	if(event.type == SDL_QUIT)
+		state = 0;
+}

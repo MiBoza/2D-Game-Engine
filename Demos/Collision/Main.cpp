@@ -1,5 +1,4 @@
 #include "Aggregate.hpp"
-#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -9,12 +8,12 @@ class Game : public Aggregate{
     Atlas* atlas;
     RigidBody* square;
 public:
-    Input_Handler input{running};
     void SetUp();
     void Update();
 };
 
 void Game::SetUp(){
+    input = new Default_Input(state);
     atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
 
     // circle = AddRigidBody();
@@ -46,7 +45,7 @@ void Game::SetUp(){
 
     Set_Framerate(30);
     // Timelimit_Event(10200);
-    Timelimit_Thread(4200);
+    Timelimit_Thread(6200);
 
     Vector2 mid_size(size/2);
     Vector2 mid_corner = window_res - mid_size;
@@ -73,10 +72,9 @@ int main(){
     Game* game = new Game("Mystery Title");
     game->SetUp();
 
-    while(game->running){
-        game->input.Input_Update();
+    while(game->state){
+        game->input->Input_Update();
         game->Timing();
-        // game->Event_Handler();
         game->Update();
         game->Components();
     }

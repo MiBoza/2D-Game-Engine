@@ -1,5 +1,4 @@
 #include "Aggregate.hpp"
-#include "Input_Handler.hpp"
 
 class Game : public Aggregate{
     using Aggregate::Aggregate;
@@ -12,7 +11,6 @@ class Game : public Aggregate{
     const Vector2& size = {20, 20};
     Object* Init_Object(int pos);
 public:
-    Input_Handler input{running};
     void SetUp();
     void Update();
 };
@@ -28,6 +26,7 @@ Object* Game::Init_Object(int pos){
 }
 
 void Game::SetUp(){
+    input = new Default_Input(state);
     atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
 
     circle  = Init_Object(5);
@@ -66,8 +65,8 @@ int main(){
     Game* game = new Game("Infinity Swirl");
     game->SetUp();
 
-    while(game->running){
-        game->input.Input_Update();
+    while(game->state){
+        game->input->Input_Update();
         game->Timing();
         game->Update();
         game->Components();

@@ -2,18 +2,17 @@
 #define Input_Handler_hpp
 
 #include <SDL2/SDL.h>
+#include "Aggregate.hpp"
 
-struct Input_Handler{
-	SDL_Event event;
-	bool& running;
-
+class Input_Handler : public Input_Base{
+public:
 	bool up_k = 0;
 	bool down_k = 0;
 	bool right_k = 0;
 	bool left_k = 0;
 
-	Input_Handler(bool& p_running);
-	void Input_Update();
+	using Input_Base::Input_Base;
+	void Input_Update() override;
 };
 
 #endif	//Input_Handler_hpp

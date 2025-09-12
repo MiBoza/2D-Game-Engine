@@ -1,5 +1,4 @@
 #include "Aggregate.hpp"
-#include "Input_Handler.hpp"
 #include "Basics.h"
 
 class Game : public Aggregate{
@@ -11,12 +10,12 @@ class Game : public Aggregate{
     int count = 1;
     int last_change;
 public:
-    Input_Handler input{running};
     void SetUp();
     void Update();
 };
 
 void Game::SetUp(){
+    input = new Default_Input(state);
     atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
     box = AddTextBox("1");
     atlas->Assign_Sprite(box, 1, 3);
@@ -37,8 +36,8 @@ int main(){
     Game* game = new Game("Load Sprites");
     game->SetUp();
 
-    while(game->running){
-        game->input.Input_Update();
+    while(game->state){
+        game->input->Input_Update();
         game->Timing();
         game->Update();
         game->Components();

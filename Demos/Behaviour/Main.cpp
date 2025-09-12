@@ -1,5 +1,4 @@
 #include "Aggregate.hpp"
-#include "Input_Handler.hpp"
 
 const int num_squares = 5;
 
@@ -10,7 +9,6 @@ class Game : public Aggregate{
     float square_speed = 0.1;
     Object* Init_Square(int x);
 public:
-    Input_Handler input{running};
     void SetUp();
     void Update();
 };
@@ -53,6 +51,7 @@ Object* Game::Init_Square(int x){
 }
 
 void Game::SetUp(){
+    input = new Default_Input(state);
     atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
     int range = 500;
     float delta = range/num_squares;
@@ -64,21 +63,13 @@ void Game::SetUp(){
     Timelimit_Thread(7000);
 }
 
-// void Game::Update(){
-//     if(frame_number == 2){
-//         squares[0]->Destroy();
-//         puts("Destroy square");
-//     }
-// }
-
 int main(){
     Game* game = new Game("Load Sprites");
     game->SetUp();
 
-    while(game->running){
-        game->input.Input_Update();
+    while(game->state){
+        game->input->Input_Update();
         game->Timing();
-        // game->Update();
         game->Components();
     }
 

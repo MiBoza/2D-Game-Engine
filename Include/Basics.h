@@ -2,6 +2,7 @@
 #define Itoa_h
 
 #include <stdio.h>
+#include <cstring>
 
 void reverse(char s[]){
      int i, j;

@@ -6,11 +6,10 @@ class Game : public Aggregate{
 
     RigidBody* player;
     Atlas* circle;
+    Input_Handler* my_input;
 
     RigidBody* Init_Rb(Atlas* atlas, const Vector2& size);
-    void Player_Movement();
 public:
-    Input_Handler input{running};
     void SetUp();
     void Update();
 };
@@ -27,28 +26,30 @@ RigidBody* Game::Init_Rb(Atlas* atlas, const Vector2& size){
 }
 
 void Game::SetUp(){
+    input = new Input_Handler(state);
+    my_input = reinterpret_cast<Input_Handler*>(input);
     circle = texture_manager->Load("Assets/Circle.png");
     Vector2 size({20, 20});
 
     player = Init_Rb(circle, size);
-    // player->velocity = {0.1, 0.01};
     Set_Framerate(30);
 }
 
-void Game::Player_Movement(){
+void Game::Update(){
+    // Player Movement
     Vector2 v({0, 0});
     static const float turn_speed = 0.15;
     static const float p_speed = 0.5;
     static const float a = 1-turn_speed;
     static const float b = turn_speed*p_speed;
 
-    if(input.up_k)
+    if(my_input->up_k)
         v += { 0, -1};
-    if(input.down_k)
+    if(my_input->down_k)
         v += { 0,  1};
-    if(input.right_k)
+    if(my_input->right_k)
         v += { 1,  0};
-    if(input.left_k)
+    if(my_input->left_k)
         v += {-1,  0};
 
     if(Is_Zero(v))
@@ -60,16 +61,12 @@ void Game::Player_Movement(){
     }
 }
 
-void Game::Update(){
-    Player_Movement();
-}
-
 int main(){
     Game* game = new Game("Player Movement");
     game->SetUp();
 
-    while(game->running){
-        game->input.Input_Update();
+    while(game->state){
+        game->input->Input_Update();
         game->Timing();
         game->Update();
         game->Components();
