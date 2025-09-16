@@ -1,7 +1,7 @@
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 
 int main(){
-    Aggregate* game = new Aggregate("Window Title");
+    Silly_Core* game = new Silly_Core("Window Title");
     game->input = new Default_Input(game->state);
 
     while(game->state){

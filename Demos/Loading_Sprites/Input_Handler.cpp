@@ -1,1 +1,0 @@
-/home/kurogawa/Desktop/Programming/C++/SDL/source/Input_Handler.cpp

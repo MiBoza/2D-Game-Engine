@@ -28,14 +28,12 @@ Atlas::~Atlas(){
     SDL_DestroyTexture(texture);
 }
 
-TextureManager::TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res):
-    renderer(p_renderer), window_res(p_window_res){
-    const char font_path[] = "Include/font.ttf";
+TextureManager::TextureManager(const Window_Data& window_data):
+    renderer(window_data.renderer), window_res(window_data.window_res){
+    const char* font_path = window_data.font_path;
     font = TTF_OpenFont(font_path, 52);
-    if(!font){
+    if(!font)
         printf("Error. Failed to open font at %s\n", font_path);
-        exit(1);
-    }
 }
 
 Atlas* TextureManager::Load(const char* path, int rows, int columns){

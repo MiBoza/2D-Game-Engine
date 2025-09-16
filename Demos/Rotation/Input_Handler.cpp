@@ -1,1 +1,0 @@
-/home/kurogawa/Desktop/Programming/C++/SDL/source/Default_Input.cpp

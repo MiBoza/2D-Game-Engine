@@ -1,14 +1,10 @@
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 
-Object* Aggregate::AddTextBox(const char line[]){
-    Object* object = AddObject();
-    object->flags |= TEXT;
-    Set_Text(object, line);
-
-    return object;
-}
-
-void Aggregate::Set_Text(Object* obj, const char line[]){
+void Silly_Core::Set_Text(Object* obj, const char line[]){
+    if(!texture_manager->font){
+        puts("Error. Trying to set text after failed font loading");
+        exit(1);
+    }
     if(!(obj->flags & TEXT)){
         puts("Warning. Trying to set text to object without TEXT flag");
         return;
@@ -32,12 +28,12 @@ void Aggregate::Set_Text(Object* obj, const char line[]){
     SDL_FreeSurface(Surface);
 }
 
-void Aggregate::Set_Text(Object* obj, const std::string line){
+void Silly_Core::Set_Text(Object* obj, const std::string line){
     const char* c_string = line.c_str();
     Set_Text(obj, c_string);
 }
 
-RigidBody* Aggregate::AddRigidBody(Object* object){
+RigidBody* Silly_Core::AddRigidBody(Object* object){
     RigidBody* rb = new RigidBody(delta_time);
     if(!object)
         object = AddObject(rb);
@@ -46,7 +42,7 @@ RigidBody* Aggregate::AddRigidBody(Object* object){
     return rb;
 }
 
-void Aggregate::AddEvent(Event&& event){
+void Silly_Core::AddEvent(Event&& event){
     if(events.size() == 0){
         events.push_back(event);
         return;
@@ -64,14 +60,14 @@ void Aggregate::AddEvent(Event&& event){
     events.insert(it, event);
 }
 
-void Aggregate::Set_Framerate(float framerate){
+void Silly_Core::Set_Framerate(float framerate){
     frame_delay = 1000.0/framerate;
     runtime = SDL_GetTicks();
     last_frame = runtime - frame_delay;
     to_wait = 0;
 }
 
-void Aggregate::Event_Handler(){
+void Silly_Core::Event_Handler(){
     if(events.size() == 0)
         return;
 
@@ -102,40 +98,23 @@ int Countdown(void* ptr){
     return 0;
 }
 
-void Aggregate::Timelimit_Thread(int miliseconds){
+void Silly_Core::Timelimit_Thread(int miliseconds){
     County* data = new County(miliseconds, &state);
     SDL_Thread* thread = SDL_CreateThread(Countdown, "Countdown", data);
     threads.push_back(thread);
 }
 
-void Aggregate::Timelimit_Event(int miliseconds){
+void Silly_Core::Timelimit_Event(int miliseconds){
     Finish* finish = new Finish(state);
     Event event({finish, miliseconds});
     AddEvent( std::move(event) );
 }
 
-void Aggregate::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
+void Silly_Core::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
     if(obj->flags & COPYEX)
         SDL_RenderCopyEx(window_data.renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination,
             obj->rotation_angle, NULL, obj->flip);
     else{
         SDL_RenderCopy(window_data.renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination);
     }
-}
-
-Finish::Finish(short& p_state):
-    state(p_state){}
-
-void Finish::execute(){
-    state = 0;
-}
-
-Input_Base::Input_Base(short& p_state):
-    state(p_state){}
-
-void Default_Input::Input_Update(){
-	SDL_PollEvent(&event);
-
-	if(event.type == SDL_QUIT)
-		state = 0;
 }

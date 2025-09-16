@@ -2,7 +2,7 @@
 #define Input_Handler_hpp
 
 #include <SDL2/SDL.h>
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 
 enum signal{
 	RESET    = 0x0,

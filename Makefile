@@ -6,7 +6,9 @@ Include := -I Project -I Include
 debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
 release_CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
 
-source_objects := Aggregate.o Aggregate2.o TextureManager.o RigidBody.o Object.o Vector2.o
+source1 := Window_Data.o Others.o Silly_Core.o Silly_Core2.o
+source2 := TextureManager.o RigidBody.o Object.o Vector2.o
+source_objects := $(source1) $(source2)
 project_objects := Main.o Counter.o Swirl.o
 
 debug_project := $(addprefix debug/,$(project_objects))
@@ -24,6 +26,8 @@ clean:
 
 debug.obj: $(debug_project) $(debug_source)
 	$(CC) $(debug_CFLAGS) $^ $(LFLAGS) -o $@
+Silly_Debug.a: $(debug_source)
+	ar -rcs $@ $^
 run_debug: debug.obj
 	./debug.obj
 $(debug_project): debug/%.o: Project/%.cpp
@@ -36,7 +40,6 @@ release.obj: $(release_project) Silly_Release.a
 	$(CC) $(release_CFLAGS) $^ $(LFLAGS) -o $@
 Silly_Release.a: $(release_source)
 	ar -rcs $@ $^
-	ar -rcs Silly_Debug.a $(debug_source)
 run_release: release.obj
 	./release.obj
 $(release_project): release/%.o: Project/%.cpp

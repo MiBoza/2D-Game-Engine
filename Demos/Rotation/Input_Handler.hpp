@@ -1,1 +1,0 @@
-/home/kurogawa/Desktop/Programming/C++/SDL/Include/Default_Input.hpp

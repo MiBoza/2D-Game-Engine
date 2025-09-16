@@ -22,7 +22,7 @@ public:
     const int& total_sprites = sprites;
 
     Atlas* Load(const char* path, int rows = 1, int columns = 1);
-    TextureManager(SDL_Renderer* p_renderer, const Vector2& p_window_res);
+    TextureManager(const Window_Data& window_data);
     ~TextureManager();
     TTF_Font* font;
 private:

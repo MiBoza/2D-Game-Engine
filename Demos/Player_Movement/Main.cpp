@@ -1,8 +1,8 @@
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 #include "Input_Handler.hpp"
 
-class Game : public Aggregate{
-    using Aggregate::Aggregate;
+class Game : public Silly_Core{
+    using Silly_Core::Silly_Core;
 
     RigidBody* player;
     Atlas* circle;

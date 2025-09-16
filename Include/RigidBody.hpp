@@ -24,7 +24,7 @@ public:
     Vector2 Get_Size();
 private:
     RigidBody(const Uint32& p_delta_time);
-    friend class Aggregate;
+    friend class Silly_Core;
 };
 
 #endif //RigidBody_hpp

@@ -1,9 +1,9 @@
 #ifnder Services_hpp
 #define Services_hpp
 
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 
-void Aggregate::Components(){
+void Silly_Core::Components(){
     //Looks through the list of objects and
     //Renders or calculates physics as required
 
@@ -34,7 +34,7 @@ void Aggregate::Components(){
     SDL_RenderPresent(renderer);
 }
 
-void Aggregate::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
+void Silly_Core::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
     if(obj->flags & COPYEX)
         SDL_RenderCopyEx(renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination,
             obj->rotation_angle, NULL, obj->flip);
@@ -42,7 +42,7 @@ void Aggregate::Render(const Object* obj, const Texture_Wrapper& tx_wrap){
         SDL_RenderCopy(renderer, tx_wrap.texture, &tx_wrap.source, &tx_wrap.destination);
 }
 
-void Aggregate::Set_Text(Object* obj, const char line[]){
+void Silly_Core::Set_Text(Object* obj, const char line[]){
     if(!(obj->flags & TEXT)){
         puts("Warning. Trying to set text to object without TEXT flag");
         return;

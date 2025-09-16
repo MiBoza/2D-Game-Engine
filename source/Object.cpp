@@ -4,9 +4,6 @@ void Print_Rect(const char* string, const SDL_Rect& rect){
     printf("%s[%i, %i, %i, %i]\n", string, rect.x, rect.y, rect.h, rect.w);
 }
 
-Texture_Wrapper::Texture_Wrapper():
-    texture(NULL){}
-
 Object::Object(RigidBody* p_rb):
     rb(p_rb), size({60, 60}){
     text.texture = NULL;

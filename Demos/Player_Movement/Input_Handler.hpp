@@ -2,7 +2,7 @@
 #define Input_Handler_hpp
 
 #include <SDL2/SDL.h>
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 
 class Input_Handler : public Input_Base{
 public:

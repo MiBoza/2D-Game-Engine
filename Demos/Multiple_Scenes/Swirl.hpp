@@ -1,7 +1,7 @@
 #ifndef Swirl_hpp
 #define Swirl_hpp
 
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 #include "Declarations.hpp"
 
 class Swirl_Input : public Input_Base{
@@ -13,8 +13,8 @@ public:
     void Input_Update() override;
 };
 
-class Swirl : public Aggregate{
-    using Aggregate::Aggregate;
+class Swirl : public Silly_Core{
+    using Silly_Core::Silly_Core;
 
     Atlas* atlas;
     Swirl_Input* my_input;

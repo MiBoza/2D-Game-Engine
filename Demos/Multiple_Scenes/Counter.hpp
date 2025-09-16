@@ -1,7 +1,7 @@
 #ifndef Counter_hpp
 #define Counter_hpp
 
-#include "Aggregate.hpp"
+#include "Silly_Core.hpp"
 #include "Declarations.hpp"
 
 class Counter_Input : public Input_Base{
@@ -13,8 +13,8 @@ public:
     void Input_Update() override;
 };
 
-class Counter : public Aggregate{
-    using Aggregate::Aggregate;
+class Counter : public Silly_Core{
+    using Silly_Core::Silly_Core;
 
     Object* box;
     Atlas* atlas;

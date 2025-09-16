@@ -2,8 +2,8 @@
 
 constexpr float step = 100*360e-6; // 100 mHz
 
-class Game : public Aggregate{
-    using Aggregate::Aggregate;
+class Game : public Silly_Core{
+    using Silly_Core::Silly_Core;
 
     Atlas* a_wheel, *m_atlas;
     Object* wheel, *textbox;
