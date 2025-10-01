@@ -14,7 +14,7 @@ public:
 
 void Game::SetUp(){
     input = new Default_Input(state);
-    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
 
     // circle = AddRigidBody();
     // circle->Set_Texture(circle_sprite_id);
@@ -45,7 +45,7 @@ void Game::SetUp(){
 
     Set_Framerate(30);
     // Timelimit_Event(10200);
-    Timelimit_Thread(6200);
+    // Timelimit_Thread(6200);
 
     Vector2 mid_size(size/2);
     Vector2 mid_corner = window_res - mid_size;
@@ -69,7 +69,11 @@ void Game::Update(){
 }
 
 int main(){
-    Game* game = new Game("Mystery Title");
+    Window_Data window_data("Bouncing Square");
+    window_data.Set_Font_Path("../../Include/font.ttf");
+    window_data.Create_Window();
+
+    Game* game = new Game(window_data);
     game->SetUp();
 
     while(game->state){

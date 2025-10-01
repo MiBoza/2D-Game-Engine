@@ -19,3 +19,17 @@ void Finish::execute(){
 
 Texture_Wrapper::Texture_Wrapper():
     texture(NULL){}
+
+Missing_File::Missing_File(const char* path){
+    message = new char[90];
+    strcpy(message, "Error. Could not find file: ");
+    strcat(message, path);
+}
+
+Missing_File::~Missing_File(){
+    delete[] message;
+}
+
+const char* Missing_File::what() const throw(){
+    return message;
+}

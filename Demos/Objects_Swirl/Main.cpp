@@ -27,7 +27,7 @@ Object* Game::Init_Object(int pos){
 
 void Game::SetUp(){
     input = new Default_Input(state);
-    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
 
     circle  = Init_Object(5);
     square1 = Init_Object(6);
@@ -62,7 +62,11 @@ void Game::Update(){
 }
 
 int main(){
-    Game* game = new Game("Infinity Swirl");
+    Window_Data window_data("Infinity Swirl");
+    window_data.Set_Font_Path("../../Include/font.ttf");
+    window_data.Create_Window();
+
+    Game* game = new Game(window_data);
     game->SetUp();
 
     while(game->state){

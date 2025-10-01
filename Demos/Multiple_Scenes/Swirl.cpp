@@ -13,7 +13,7 @@ Object* Swirl::Init_Object(int pos){
 void Swirl::SetUp(){
     input = new Swirl_Input(state);
     my_input = reinterpret_cast<Swirl_Input*>(input);
-    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
 
     circle  = Init_Object(5);
     square1 = Init_Object(6);
@@ -22,7 +22,7 @@ void Swirl::SetUp(){
     square4 = Init_Object(6);
     square5 = Init_Object(6);
 
-    Set_Framerate(28);
+    Set_Framerate(30);
 }
 
 Vector2 Swirling(float degrees){

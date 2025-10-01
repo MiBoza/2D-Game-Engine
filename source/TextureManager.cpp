@@ -29,22 +29,21 @@ Atlas::~Atlas(){
 }
 
 TextureManager::TextureManager(const Window_Data& window_data):
-    renderer(window_data.renderer), window_res(window_data.window_res){
+    font(nullptr), renderer(window_data.renderer),
+    window_res(window_data.window_res){
+
     const char* font_path = window_data.font_path;
+    if(!std::filesystem::exists(font_path)){
+        throw( Missing_File(font_path) );
+    }
     font = TTF_OpenFont(font_path, 52);
     if(!font)
-        printf("Error. Failed to open font at %s\n", font_path);
+        throw( std::runtime_error("SDL_ttf not initialised") );
 }
 
 Atlas* TextureManager::Load(const char* path, int rows, int columns){
     if(!std::filesystem::exists(path)){
-        printf("Warning: Couldn't find texture at %s\n", path);
-        return NULL;
-    }
-
-    if(!renderer){
-        printf("renderer = %i\n", renderer);
-        exit(1);
+        throw( Missing_File(path) );
     }
     SDL_Texture* texture = IMG_LoadTexture(renderer, path);
     if(!texture){

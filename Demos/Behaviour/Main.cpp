@@ -3,6 +3,9 @@
 
 int main(){
     Window_Data window_data("Load Sprites");
+    window_data.Set_Font_Path("../../Include/font.ttf");
+    window_data.Create_Window();
+
     Blocks* game = new Blocks(window_data);
     game->SetUp();
 

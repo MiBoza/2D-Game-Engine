@@ -17,6 +17,7 @@ void Silly_Core::Set_Text(Object* obj, const char line[]){
     text.source.x = 0;
     text.source.y = 0;
     SDL_Surface* Surface = TTF_RenderText_Blended(texture_manager->font, line, obj->colour);
+    // puts( SDL_GetError() );
     text.texture = SDL_CreateTextureFromSurface(window_data.renderer, Surface);
     if(!text.texture){
         puts("Error. Text failed to render");

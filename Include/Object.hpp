@@ -2,7 +2,6 @@
 #define Object_hpp
 
 #include "Window_Data.hpp"
-#include "Others.hpp"
 #include <list>
 using std::list;
 

@@ -3,6 +3,8 @@
 
 #include "Object.hpp"
 
+class Silly_Core;
+
 class Atlas{
 public:
     SDL_Texture* texture;
@@ -26,10 +28,10 @@ public:
     ~TextureManager();
     TTF_Font* font;
 private:
+    SDL_Renderer* renderer;
     int sprites = 0;
     list<Atlas*> textures;
     Vector2 window_res;
-    SDL_Renderer* renderer;
 };
 
 #endif // TextureManager_hpp

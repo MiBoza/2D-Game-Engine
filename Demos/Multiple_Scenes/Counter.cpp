@@ -4,10 +4,12 @@
 void Counter::SetUp(){
     input = new Counter_Input(state);
     my_input = reinterpret_cast<Counter_Input*>(input);
-    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
     box = AddTextBox("1");
     atlas->Assign_Sprite(box, 1, 3);
     box->Set_Size({420, 250});
+
+    Set_Framerate(25);
 }
 
 void Counter::Update(){

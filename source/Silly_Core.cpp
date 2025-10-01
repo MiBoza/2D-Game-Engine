@@ -3,16 +3,22 @@ using std::list;
 
 Silly_Core::Silly_Core(Window_Data& p_window_data):
     window_data(p_window_data), state(p_window_data.state),
-    runtime(p_window_data.runtime),
     frame_number(p_window_data.frame_number),
     relaxation(p_window_data.relaxation),
+    runtime(p_window_data.runtime),
+    texture_manager(nullptr),
     window_res(p_window_data.window_res){
+
     texture_manager = new TextureManager(p_window_data);
+    if(!window_data.window)
+        puts("Warning. No window in window_data. Try Create_Window()");
+
+    window_data.flags |= SCENE_READY;
 }
 
 Silly_Core::~Silly_Core(){
-    delete texture_manager;
-    texture_manager = nullptr;
+    if(texture_manager)
+        delete texture_manager;
     for(Object* obj : objects){
         delete obj;
     }
@@ -22,6 +28,8 @@ Silly_Core::~Silly_Core(){
         SDL_WaitThread(thread, nullptr);
     if(input)
         delete input;
+
+    window_data.flags &= ~SCENE_READY;
 }
 
 void Silly_Core::Components(){

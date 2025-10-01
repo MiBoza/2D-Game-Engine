@@ -29,7 +29,7 @@ Object* Blocks::Init_Square(int x){
 
 void Blocks::SetUp(){
     input = new Default_Input(state);
-    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
     int range = 500;
     float delta = range/num_squares;
     float left = 450 - (num_squares-1)*delta/2;
@@ -37,5 +37,5 @@ void Blocks::SetUp(){
         Init_Square(left + i*delta);
     }
     Set_Framerate(30);
-    Timelimit_Thread(7000);
+    Timelimit_Thread(6300);
 }

@@ -5,7 +5,7 @@ Include := -I ../../Include
 release_CFLAGS := -std=c++20 -w -fmax-errors=6 -s -O3
 debug_CFLAGS := -std=c++20 -w -fmax-errors=6 -g -fsanitize=address
 
-source_objects := Main.o Blocks.o
+source_objects := Main.o Swirl.o Counter.o
 debug_objects := $(addprefix debug/,$(source_objects))
 release_objects := $(addprefix release/,$(source_objects))
 

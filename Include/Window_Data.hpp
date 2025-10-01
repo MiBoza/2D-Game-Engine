@@ -1,30 +1,31 @@
 #ifndef Window_Data_hpp
 #define Window_Data_hpp
 
+#include "Others.hpp"
 #include "Vector2.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
 class Window_Data{
-public:
-    Vector2 window_res;
-    char font_path[20];
-    bool fullscreen;
 private:
     char* title;
-	Uint32 frame_number = 0;
+    char* font_path;
+	Uint32 frame_number;
 	Uint32 relaxation;
-	Uint32 runtime = 1;
+	Uint32 runtime;
     SDL_Window* window;
     SDL_Renderer* renderer;
 
 	friend class Silly_Core;
 	friend class TextureManager;
 public:
-	short state;
+    int flags;
+	short state = 1;
+    Vector2 window_res;
 
-	Window_Data(char* p_title, int p_state = 1);
+    void Set_Font_Path(char* p_font_path);
+	Window_Data(char p_title[], int p_state = 1);
     void Create_Window();
 	~Window_Data();
 };

@@ -14,11 +14,6 @@ void Object::Set_Pos(const Vector2& p_pos){
     flags |= OUTDATED;
 }
 
-void Object::Set_Pos(Vector2&& p_pos){
-    pos = p_pos;
-    flags |= OUTDATED;
-}
-
 void Object::Set_Size(const Vector2& p_size){
     size = p_size;
     flags |= OUTDATED;

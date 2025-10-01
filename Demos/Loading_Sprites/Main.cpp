@@ -30,8 +30,8 @@ Object* Game::Init_Object(Atlas* atlas, int row, int column){
 
 void Game::SetUp(){
     input = new Default_Input(state);
-    a_square = texture_manager->Load("Assets/Square.png");
-    a_3D = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    a_square = texture_manager->Load("../../Assets/Square.png");
+    a_3D = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
 
     //Loading a single sprite
     square = AddObject();
@@ -52,10 +52,14 @@ void Game::SetUp(){
 void Game::Update(){}
 
 int main(){
-    Game* game = new Game("Load Sprites");
+    Window_Data window_data("Load Sprites");
+    window_data.Set_Font_Path("../../Include/font.ttf");
+    window_data.Create_Window();
+
+    Game* game = new Game(window_data);
     game->SetUp();
 
-    while(game->state){
+    while(window_data.state){
         game->input->Input_Update();
         game->Components();
     }

@@ -16,11 +16,10 @@ public:
 
 void Game::SetUp(){
     input = new Default_Input(state);
-    atlas = texture_manager->Load("Assets/Atlas.png", 2, 5);
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
     box = AddTextBox("1");
     atlas->Assign_Sprite(box, 1, 3);
     box->Set_Size({420, 250});
-    // Set_Framerate(3);
 }
 
 void Game::Update(){
@@ -33,7 +32,11 @@ void Game::Update(){
 }
 
 int main(){
-    Game* game = new Game("Load Sprites");
+    Window_Data window_data("Text Box");
+    window_data.Set_Font_Path("../../Include/font.ttf");
+    window_data.Create_Window();
+
+    Game* game = new Game(window_data);
     game->SetUp();
 
     while(game->state){

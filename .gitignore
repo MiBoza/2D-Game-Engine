@@ -1,4 +1,6 @@
 /*
+Demos/**/*.o
+Demos/**/*.obj
 !.gitignore
 !Assets/
 !debug
@@ -10,3 +12,5 @@
 !Tests/
 !source/
 !To Do.txt
+
+source/Hot_Fix.cpp
