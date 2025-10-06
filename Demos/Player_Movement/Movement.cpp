@@ -1,23 +1,14 @@
 #include "Movement.hpp"
 
-RigidBody* Movement::Init_Rb(Atlas* atlas, const Vector2& size){
-    RigidBody* rb;
-    rb = AddRigidBody();
-
-    Object* obj = rb->object;
-    atlas->Assign_Sprite(obj);
-    obj->Set_Size(size);
-
-    return rb;
-}
-
 void Movement::SetUp(){
     input = new Input_Handler(state);
     my_input = reinterpret_cast<Input_Handler*>(input);
-    circle = texture_manager->Load("../../Assets/Circle.png");
+    atlas = texture_manager->Load("../../Assets/Atlas.png", 2, 5);
     Vector2 size({20, 20});
 
-    player = Init_Rb(circle, size);
+    player = AddRigidBody();
+    atlas->Assign_Sprite(player, 1, 0);
+    player->Set_Size(size);
     Set_Framerate(30);
 }
 

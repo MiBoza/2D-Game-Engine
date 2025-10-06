@@ -1,7 +1,0 @@
-Simplify testing
-Make headless mode
-Update documentation
-Animation Component
-Collider Component
-Save and Load State
-Interactive Scene Editor

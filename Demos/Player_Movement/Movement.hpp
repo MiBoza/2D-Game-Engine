@@ -19,7 +19,7 @@ class Movement : public Silly_Core{
     using Silly_Core::Silly_Core;
 
     RigidBody* player;
-    Atlas* circle;
+    Atlas* atlas;
     Input_Handler* my_input;
 
     RigidBody* Init_Rb(Atlas* atlas, const Vector2& size);

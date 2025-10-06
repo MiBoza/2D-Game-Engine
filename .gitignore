@@ -1,16 +1,6 @@
 /*
 Demos/**/*.o
 Demos/**/*.obj
-!.gitignore
-!Assets/
-!debug
 !Demos/
-!Documentation.pdf
-!Include/
-!Makefile
-!Project
-!Tests/
-!source/
-!To Do.txt
-
-source/Hot_Fix.cpp
+!Silly_Debug.a
+!Silly_Release.a
