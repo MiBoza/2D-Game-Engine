@@ -4,7 +4,6 @@ Demos/**/*.obj
 !.gitignore
 !Assets/
 !debug
-!Demos/
 !Documentation.pdf
 !Include/
 !Makefile

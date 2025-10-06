@@ -1,7 +1,7 @@
 #ifndef TextureManager_hpp
 #define TextureManager_hpp
 
-#include "Object.hpp"
+#include "RigidBody.hpp"
 
 class Silly_Core;
 
@@ -12,8 +12,10 @@ public:
     Vector2 resolution;
     bool deleted = 0;
 
-    void Assign_Sprite(Object* obj, int row, int column);
+    void Assign_Sprite(Object* obj, int p_row, int p_column);
     void Assign_Sprite(Object* obj, int pos = 0);
+    void Assign_Sprite(RigidBody* rb, int row, int column);
+    void Assign_Sprite(RigidBody* rb, int pos = 0);
     friend class TextureManager;
 private:
     ~Atlas();   //User should assign delete instead

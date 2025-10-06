@@ -24,6 +24,16 @@ void Atlas::Assign_Sprite(Object* obj, int pos){
     Assign_Sprite(obj, row, column);
 }
 
+void Atlas::Assign_Sprite(RigidBody* rb, int row, int column){
+    Object* obj = rb->object;
+    Assign_Sprite(obj, row, column);
+}
+
+void Atlas::Assign_Sprite(RigidBody* rb, int pos){
+    Object* obj = rb->object;
+    Assign_Sprite(obj, pos);
+}
+
 Atlas::~Atlas(){
     SDL_DestroyTexture(texture);
 }
