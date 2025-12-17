@@ -6,4 +6,5 @@ Demos/**/*.obj
 !Copyright/
 !Include/
 !.gitignore
+!LICENSE.md
 !README.md
