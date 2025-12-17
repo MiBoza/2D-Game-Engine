@@ -1,6 +1,8 @@
 /*
+!Demos/
 Demos/**/*.o
 Demos/**/*.obj
-!Demos/
-!Silly_Debug.a
-!Silly_Release.a
+!Assets/
+!Include/
+!.gitignore
+!README.md
