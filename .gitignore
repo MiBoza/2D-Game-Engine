@@ -3,6 +3,7 @@
 Demos/**/*.o
 Demos/**/*.obj
 !Assets/
+!Copyright/
 !Include/
 !.gitignore
 !README.md
